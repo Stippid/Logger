@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimal Logger</title>
+    <!-- Added Fira Mono Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --bg: #f9f9f9; --text: #333; --border: #e0e0e0; --accent: #000; --danger: #dc3545; --surface: #fff; --highlight: #ffeb3b; --highlight-text: #000;
+            --heat-1: #c6c6c6; --heat-2: #8c8c8c; --heat-3: #525252; --heat-4: #000000;
+        }
+        body.dark-mode {
+            --bg: #121212; --text: #e0e0e0; --border: #333; --accent: #fff; --danger: #ff4d4d; --surface: #1e1e1e; --highlight: #b3b300; --highlight-text: #fff;
+            --heat-1: #555555; --heat-2: #888888; --heat-3: #bbbbbb; --heat-4: #ffffff;
+        }
+        /* Applied Fira Mono */
+        body { font-family: 'Fira Mono', monospace; background-color: var(--bg); color: var(--text); margin: 0; padding: 0; line-height: 1.6; transition: background-color 0.3s, color 0.3s; }
+        .container { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+        
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        h2 { margin: 0; font-weight: 500; }
+        .profile-section { position: relative; }
+        .profile-btn { background: var(--surface); color: var(--text); border: 1px solid var(--border); padding: 8px 15px; border-radius: 20px; cursor: pointer; font-family: inherit; font-weight: bold; }
+        .dropdown { display: none; position: absolute; right: 0; top: 40px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 150px; overflow: hidden; z-index: 10; }
+        .dropdown.active { display: block; }
+        .dropdown button { width: 100%; text-align: left; background: none; color: var(--text); border: none; padding: 10px 15px; border-radius: 0; cursor: pointer; font-family: inherit; }
+        .dropdown button:hover { background: var(--bg); }
+
+        textarea, input[type="text"], input[type="password"] { width: 100%; padding: 12px 15px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; box-sizing: border-box; margin-bottom: 10px; background: var(--surface); color: var(--text); }
+        textarea { height: 120px; resize: vertical; }
+        textarea:focus, input:focus { outline: none; border-color: var(--accent); }
+        
+        button { background: var(--accent); color: var(--bg); border: 1px solid var(--accent); padding: 10px 20px; border-radius: 6px; cursor: pointer; font-size: 14px; font-family: inherit; transition: opacity 0.2s; }
+        button:hover { opacity: 0.8; }
+        .btn-secondary { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
+        .btn-danger { background: var(--surface); color: var(--danger); border: 1px solid var(--danger); padding: 5px 10px; font-size: 12px;}
+        .btn-edit { background: var(--surface); color: var(--text); border: 1px solid var(--border); padding: 5px 10px; font-size: 12px;}
+        .controls { display: flex; justify-content: space-between; margin-bottom: 40px; gap: 10px; }
+
+        /* Heatmap Styles */
+        .heatmap-wrapper { overflow-x: auto; margin-bottom: 20px; padding-bottom: 10px; }
+        .heatmap { display: grid; grid-template-rows: repeat(7, 12px); grid-auto-flow: column; gap: 4px; width: max-content; }
+        .heat-cell { width: 12px; height: 12px; border-radius: 2px; background-color: var(--border); cursor: pointer; transition: transform 0.1s; }
+        .heat-cell:hover { transform: scale(1.2); }
+        .heat-cell.empty { background-color: transparent; cursor: default; }
+        .heat-cell.empty:hover { transform: none; }
+        .heat-cell[data-level="1"] { background-color: var(--heat-1); }
+        .heat-cell[data-level="2"] { background-color: var(--heat-2); }
+        .heat-cell[data-level="3"] { background-color: var(--heat-3); }
+        .heat-cell[data-level="4"] { background-color: var(--heat-4); }
+        
+        /* Tooltip & Filters */
+        .tooltip { position: absolute; background: var(--surface); color: var(--text); border: 1px solid var(--border); padding: 10px; border-radius: 6px; font-size: 12px; pointer-events: none; display: none; z-index: 100; box-shadow: 0 4px 6px rgba(0,0,0,0.1); max-width: 250px; white-space: pre-wrap; word-wrap: break-word; }
+        .filter-notice { display: none; justify-content: space-between; align-items: center; background: var(--surface); padding: 10px 15px; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 15px; font-size: 14px; }
+
+        .log-entry { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 15px; }
+        .log-meta { font-size: 12px; color: #888; margin-bottom: 10px; border-bottom: 1px solid var(--border); padding-bottom: 5px; display: flex; justify-content: space-between; align-items: center;}
+        .log-actions { display: flex; gap: 5px; }
+        pre { margin: 0; white-space: pre-wrap; word-wrap: break-word; font-family: 'Fira Mono', monospace; font-size: 14px; }
+        .edit-area { width: 100%; height: 100px; margin-top: 10px; }
+        .highlight { background-color: var(--highlight); color: var(--highlight-text); border-radius: 2px; padding: 0 2px; }
+
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 20; }
+        .modal.active { display: flex; }
+        .modal-content { background: var(--surface); padding: 30px; border-radius: 8px; width: 300px; border: 1px solid var(--border); }
+        .modal-content h3 { margin-top: 0; }
+        
+        #authScreen { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; }
+        .auth-box { background: var(--surface); padding: 40px; border-radius: 8px; border: 1px solid var(--border); width: 300px; text-align: center; }
+        #appScreen { display: none; }
+    </style>
+</head>
+<body>
+
+    <div id="tooltip" class="tooltip"></div>
+
+    <div id="authScreen">
+        <div class="auth-box">
+            <h2>Login / Register</h2>
+            <input type="text" id="username" placeholder="Username">
+            <input type="password" id="password" placeholder="Password">
+            <button onclick="login()" style="width: 100%; margin-bottom: 10px;">Login</button>
+            <button class="btn-secondary" onclick="register()" style="width: 100%;">Register</button>
+        </div>
+    </div>
+
+    <div id="appScreen" class="container">
+        <header>
+            <h2>Minimal Logger</h2>
+            <div class="profile-section">
+                <button class="profile-btn" onclick="toggleDropdown()" id="profileName">Profile</button>
+                <div class="dropdown" id="profileDropdown">
+                    <button onclick="openSettings()">Settings</button>
+                    <button onclick="logout()">Logout</button>
+                </div>
+            </div>
+        </header>
+
+        <textarea id="logInput" placeholder="Paste text, code, or notes here..."></textarea>
+        <div class="controls">
+            <button onclick="addLog()">Save Log</button>
+            <button class="btn-secondary" onclick="exportDocument()">Export Polished Document</button>
+        </div>
+
+        <h2>History</h2>
+        
+        <!-- Heatmap Container -->
+        <div class="heatmap-wrapper">
+            <div id="heatmap" class="heatmap"></div>
+        </div>
+
+        <!-- Filter Notice -->
+        <div id="filterNotice" class="filter-notice">
+            <span>Showing logs for: <strong id="filterDateText"></strong></span>
+            <button class="btn-secondary" style="padding: 5px 10px; font-size: 12px;" onclick="clearFilter()">Clear Filter</button>
+        </div>
+
+        <input type="text" id="searchInput" placeholder="Search exact phrases, dates (MM/DD/YYYY), or times...">
+        <div id="logContainer"></div>
+    </div>
+
+    <div class="modal" id="settingsModal">
+        <div class="modal-content">
+            <h3>Settings</h3>
+            <label style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                Dark Mode
+                <input type="checkbox" id="themeToggle" onchange="toggleTheme()">
+            </label>
+            <button class="btn-secondary" onclick="closeSettings()" style="width: 100%;">Close</button>
+        </div>
+    </div>
+
+    <script>
+        let logs = [];
+        let currentUser = JSON.parse(localStorage.getItem('minimal_user'));
+        let selectedDateFilter = null;
+
+        if (localStorage.getItem('minimal_theme') === 'dark') {
+            document.body.classList.add('dark-mode');
+            document.getElementById('themeToggle').checked = true;
+        }
+
+        if (currentUser) showApp();
+
+        async function register() {
+            const u = document.getElementById('username').value;
+            const p = document.getElementById('password').value;
+            const res = await fetch('/api/register', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username: u, password: p }) });
+            if (res.ok) alert("Registered! You can now log in."); else alert("Username already exists.");
+        }
+
+        async function login() {
+            const u = document.getElementById('username').value;
+            const p = document.getElementById('password').value;
+            const res = await fetch('/api/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username: u, password: p }) });
+            if (res.ok) {
+                currentUser = await res.json();
+                localStorage.setItem('minimal_user', JSON.stringify(currentUser));
+                showApp();
+            } else alert("Invalid credentials.");
+        }
+
+        function logout() {
+            localStorage.removeItem('minimal_user');
+            currentUser = null;
+            document.getElementById('appScreen').style.display = 'none';
+            document.getElementById('authScreen').style.display = 'flex';
+        }
+
+        function showApp() {
+            document.getElementById('authScreen').style.display = 'none';
+            document.getElementById('appScreen').style.display = 'block';
+            document.getElementById('profileName').innerText = currentUser.username;
+            fetchLogs();
+        }
+
+        function toggleDropdown() { document.getElementById('profileDropdown').classList.toggle('active'); }
+        function openSettings() { document.getElementById('settingsModal').classList.add('active'); document.getElementById('profileDropdown').classList.remove('active'); }
+        function closeSettings() { document.getElementById('settingsModal').classList.remove('active'); }
+        function toggleTheme() {
+            if (document.getElementById('themeToggle').checked) { document.body.classList.add('dark-mode'); localStorage.setItem('minimal_theme', 'dark'); } 
+            else { document.body.classList.remove('dark-mode'); localStorage.setItem('minimal_theme', 'light'); }
+        }
+        window.onclick = function(e) { if (!e.target.matches('.profile-btn')) document.getElementById('profileDropdown').classList.remove('active'); }
+
+        function getHeaders() { return { 'Content-Type': 'application/json', 'x-user-id': currentUser.id }; }
+
+        async function fetchLogs() {
+            const res = await fetch('/api/logs', { headers: getHeaders() });
+            logs = await res.json();
+            renderHeatmap();
+            renderLogs(document.getElementById('searchInput').value);
+        }
+
+        async function addLog() {
+            const input = document.getElementById('logInput').value;
+            if (!input.trim()) return;
+            const now = new Date();
+            const newLog = { text: input, date: now.toLocaleDateString(), time: now.toLocaleTimeString(), timestamp: Date.now() };
+            await fetch('/api/logs', { method: 'POST', headers: getHeaders(), body: JSON.stringify(newLog) });
+            document.getElementById('logInput').value = '';
+            fetchLogs();
+        }
+
+        async function deleteLog(id) {
+            if (!confirm("Delete this log?")) return;
+            await fetch(`/api/logs/${id}`, { method: 'DELETE', headers: getHeaders() });
+            fetchLogs();
+        }
+
+        function editLog(id) {
+            const log = logs.find(l => l.id === id);
+            document.getElementById(`log-content-${id}`).innerHTML = `
+                <textarea id="edit-input-${id}" class="edit-area">${log.text}</textarea>
+                <button class="btn-edit" onclick="saveEdit(${id})" style="margin-top: 5px;">Save</button>
+                <button class="btn-secondary" onclick="renderLogs()" style="margin-top: 5px; padding: 5px 10px; font-size: 12px;">Cancel</button>
+            `;
+        }
+
+        async function saveEdit(id) {
+            const newText = document.getElementById(`edit-input-${id}`).value;
+            await fetch(`/api/logs/${id}`, { method: 'PUT', headers: getHeaders(), body: JSON.stringify({ text: newText }) });
+            fetchLogs();
+        }
+
+        // --- Heatmap Logic ---
+        function renderHeatmap() {
+            const container = document.getElementById('heatmap');
+            container.innerHTML = '';
+            
+            const logsByDate = {};
+            logs.forEach(l => {
+                if(!logsByDate[l.date]) logsByDate[l.date] = [];
+                logsByDate[l.date].push(l);
+            });
+
+            const today = new Date();
+            const startDate = new Date();
+            startDate.setDate(today.getDate() - 364);
+            
+            // Add empty cells to align the first day to the correct day of the week (Sunday = 0)
+            for(let i = 0; i < startDate.getDay(); i++) {
+                const emptyCell = document.createElement('div');
+                emptyCell.className = 'heat-cell empty';
+                container.appendChild(emptyCell);
+            }
+
+            for(let i = 364; i >= 0; i--) {
+                const d = new Date();
+                d.setDate(today.getDate() - i);
+                const dateStr = d.toLocaleDateString();
+                const dayLogs = logsByDate[dateStr] || [];
+                const count = dayLogs.length;
+                
+                let level = 0;
+                if(count === 1) level = 1;
+                else if(count === 2) level = 2;
+                else if(count >= 3 && count <= 4) level = 3;
+                else if(count > 4) level = 4;
+
+                const cell = document.createElement('div');
+                cell.className = 'heat-cell';
+                if(level > 0) cell.setAttribute('data-level', level);
+                
+                let previewText = `${dateStr}: ${count} logs\n`;
+                if(count > 0) {
+                    previewText += dayLogs.slice(0, 3).map(l => '- ' + l.text.substring(0, 25).replace(/\n/g, ' ') + '...').join('\n');
+                    if(count > 3) previewText += `\n...and ${count - 3} more`;
+                } else {
+                    previewText += "No logs";
+                }
+
+                cell.onmouseover = (e) => {
+                    const tt = document.getElementById('tooltip');
+                    tt.innerText = previewText;
+                    tt.style.display = 'block';
+                    tt.style.left = e.pageX + 15 + 'px';
+                    tt.style.top = e.pageY + 15 + 'px';
+                };
+                cell.onmouseout = () => document.getElementById('tooltip').style.display = 'none';
+                
+                cell.onclick = () => {
+                    if(count > 0) {
+                        selectedDateFilter = dateStr;
+                        renderLogs(document.getElementById('searchInput').value);
+                    }
+                };
+
+                container.appendChild(cell);
+            }
+            
+            const wrapper = document.querySelector('.heatmap-wrapper');
+            wrapper.scrollLeft = wrapper.scrollWidth;
+        }
+
+        function clearFilter() {
+            selectedDateFilter = null;
+            renderLogs(document.getElementById('searchInput').value);
+        }
+
+        function escapeHTML(str) { return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag])); }
+        function highlightText(text, query) {
+            const escapedText = escapeHTML(text);
+            if (!query) return escapedText;
+            const escapedQuery = escapeHTML(query);
+            return escapedText.replace(new RegExp(`(${escapedQuery})`, 'gi'), '<span class="highlight">$1</span>');
+        }
+
+        function renderLogs(query = '') {
+            const container = document.getElementById('logContainer');
+            container.innerHTML = '';
+
+            let filteredLogs = logs;
+
+            // Apply Date Filter
+            if (selectedDateFilter) {
+                filteredLogs = filteredLogs.filter(l => l.date === selectedDateFilter);
+                document.getElementById('filterNotice').style.display = 'flex';
+                document.getElementById('filterDateText').innerText = selectedDateFilter;
+            } else {
+                document.getElementById('filterNotice').style.display = 'none';
+            }
+
+            // Apply Search Query
+            filteredLogs = filteredLogs.filter(l => 
+                l.text.toLowerCase().includes(query.toLowerCase()) || l.date.includes(query) || l.time.includes(query)
+            );
+
+            filteredLogs.forEach(l => {
+                const div = document.createElement('div');
+                div.className = 'log-entry';
+                div.innerHTML = `
+                    <div class="log-meta">
+                        <span>${highlightText(l.date, query)} at ${highlightText(l.time, query)}</span>
+                        <div class="log-actions">
+                            <button class="btn-edit" onclick="editLog(${l.id})">Edit</button>
+                            <button class="btn-danger" onclick="deleteLog(${l.id})">Delete</button>
+                        </div>
+                    </div>
+                    <div id="log-content-${l.id}">
+                        <pre>${highlightText(l.text, query)}</pre>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function exportDocument() {
+            if (logs.length === 0) return alert("No logs to export.");
+            let docContent = `# Polished Log Document\nUser: ${currentUser.username}\nGenerated on: ${new Date().toLocaleString()}\n\n---\n\n`;
+            [...logs].sort((a, b) => a.timestamp - b.timestamp).forEach(l => {
+                docContent += `### ${l.date} - ${l.time}\n\n\`\`\`text\n${l.text}\n\`\`\`\n\n---\n\n`;
+            });
+            const blob = new Blob([docContent], { type: 'text/markdown' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url; a.download = `${currentUser.username}_Logs_${Date.now()}.md`;
+            a.click(); URL.revokeObjectURL(url);
+        }
+
+        document.getElementById('searchInput').addEventListener('input', (e) => renderLogs(e.target.value));
+    </script>
+</body>
+</html>
