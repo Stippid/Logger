@@ -52,6 +52,7 @@ db.serialize(() => {
 
     // Add admin_id column to existing conversations table (ignores error if it already exists)
     db.run("ALTER TABLE conversations ADD COLUMN admin_id INTEGER", function(err) {});
+    db.run("ALTER TABLE participants ADD COLUMN last_read_timestamp INTEGER DEFAULT 0", function(err) {});
 });
 
 // ==========================================
@@ -105,32 +106,57 @@ app.get('/api/users', (req, res) => {
     db.all("SELECT id, username FROM users", [], (err, rows) => res.json(rows || []));
 });
 
-// Get user's conversations (Now fetches admin_id)
+// Get user's conversations (Now calculates unread messages)
 app.get('/api/conversations', (req, res) => {
     const userId = req.headers['x-user-id'];
     const query = `
         SELECT c.id, c.is_group, c.name, c.admin_id,
-        (SELECT username FROM users u JOIN participants p2 ON u.id = p2.user_id WHERE p2.conversation_id = c.id AND u.id != ? LIMIT 1) as other_user
+        (SELECT username FROM users u JOIN participants p2 ON u.id = p2.user_id WHERE p2.conversation_id = c.id AND u.id != ? LIMIT 1) as other_user,
+        (SELECT COUNT(*) FROM messages m WHERE m.conversation_id = c.id AND m.timestamp > p.last_read_timestamp AND m.sender_id != ?) as unread_count
         FROM conversations c
         JOIN participants p ON c.id = p.conversation_id
         WHERE p.user_id = ?
     `;
-    db.all(query, [userId, userId], (err, rows) => res.json(rows || []));
+    db.all(query, [userId, userId, userId], (err, rows) => res.json(rows || []));
 });
 
-// Create a new conversation (Now sets the creator as admin)
+// Create a new conversation (Now prevents duplicate 1-on-1 chats)
 app.post('/api/conversations', (req, res) => {
     const userId = req.headers['x-user-id'];
     const { is_group, name, participant_ids } = req.body; 
     const admin_id = is_group ? userId : null; // Set admin only for groups
 
-    db.run("INSERT INTO conversations (is_group, name, admin_id) VALUES (?, ?, ?)", [is_group, name, admin_id], function(err) {
-        const convId = this.lastID;
-        const stmt = db.prepare("INSERT INTO participants (conversation_id, user_id) VALUES (?, ?)");
-        participant_ids.forEach(id => stmt.run(convId, id));
-        stmt.finalize();
-        res.json({ id: convId, is_group, name, admin_id });
-    });
+    const createChat = () => {
+        db.run("INSERT INTO conversations (is_group, name, admin_id) VALUES (?, ?, ?)", [is_group, name, admin_id], function(err) {
+            const convId = this.lastID;
+            const stmt = db.prepare("INSERT INTO participants (conversation_id, user_id) VALUES (?, ?)");
+            participant_ids.forEach(id => stmt.run(convId, id));
+            stmt.finalize();
+            res.json({ id: convId, is_group, name, admin_id });
+        });
+    };
+
+    // If it's a 1-on-1 chat, check if it already exists
+    if (!is_group && participant_ids.length === 2) {
+        const [u1, u2] = participant_ids;
+        const checkQuery = `
+            SELECT c.id 
+            FROM conversations c
+            JOIN participants p1 ON c.id = p1.conversation_id
+            JOIN participants p2 ON c.id = p2.conversation_id
+            WHERE c.is_group = 0 AND p1.user_id = ? AND p2.user_id = ?
+        `;
+        db.get(checkQuery, [u1, u2], (err, row) => {
+            if (row) {
+                // Chat already exists, return the existing ID
+                return res.json({ id: row.id, exists: true });
+            }
+            createChat();
+        });
+    } else {
+        // It's a group chat, create it normally (duplicate groups are allowed)
+        createChat();
+    }
 });
 
 // Get messages for a conversation
@@ -143,6 +169,15 @@ app.get('/api/messages/:conversationId', (req, res) => {
         ORDER BY m.timestamp ASC
     `;
     db.all(query, [req.params.conversationId], (err, rows) => res.json(rows || []));
+});
+
+// Mark a conversation as read
+app.post('/api/conversations/:id/read', (req, res) => {
+    const userId = req.headers['x-user-id'];
+    const convId = req.params.id;
+    db.run("UPDATE participants SET last_read_timestamp = ? WHERE conversation_id = ? AND user_id = ?", [Date.now(), convId, userId], function(err) {
+        res.json({ success: true });
+    });
 });
 
 // Update User Account
