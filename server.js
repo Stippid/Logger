@@ -29,7 +29,14 @@ app.use('/uploads', express.static(uploadDir));
 
 // Configure Multer for file uploads (No size limits, streams to disk)
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => cb(null, uploadDir),
+    destination: (req, file, cb) => {
+        db.get("SELECT username FROM users WHERE id = ?", [req.headers['x-user-id']], (err, user) => {
+            const safeUsername = user ? user.username.replace(/[^a-z0-9_\-]/gi, '_') : 'unknown';
+            const userDir = path.join(uploadDir, safeUsername);
+            if (!fs.existsSync(userDir)) fs.mkdirSync(userDir, { recursive: true });
+            cb(null, userDir);
+        });
+    },
     filename: (req, file, cb) => {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
         cb(null, uniqueSuffix + '-' + file.originalname);
@@ -248,9 +255,12 @@ app.delete('/api/conversations/:id', (req, res) => {
 // Upload a file
 app.post('/api/upload', upload.single('file'), (req, res) => {
     if (!req.file) return res.status(400).json({ error: "No file uploaded" });
-    res.json({ 
-        file_url: `/uploads/${req.file.filename}`, 
-        file_name: req.file.originalname 
+    
+    // req.file.path gives full disk path; derive a relative URL from uploadDir
+    const relativePath = req.file.path.replace(uploadDir, '').replace(/\\/g, '/');
+    res.json({
+        file_url: `/uploads${relativePath}`,
+        file_name: req.file.originalname
     });
 });
 
