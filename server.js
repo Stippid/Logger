@@ -313,6 +313,43 @@ io.on('connection', (socket) => {
     });
 });
 
+// ==========================================
+// FILEVAULT ENDPOINTS
+// ==========================================
+
+const fvRegistry = {};
+
+// Files
+app.get('/api/fv/files', (req, res) => {
+    const files = Object.values(fvRegistry).sort((a, b) => b.ts - a.ts);
+    res.json(files);
+});
+
+app.post('/api/fv/files', (req, res) => {
+    const { name, owner } = req.body;
+    if (!name || !owner) return res.status(400).json({ error: 'name and owner are required' });
+    const key = name.trim().toLowerCase();
+    const cleanName = name.trim();
+    if (fvRegistry[key]) {
+        const existing = fvRegistry[key];
+        return res.status(409).json({ error: 'duplicate', message: `"${cleanName}" was already added by ${existing.owner}.`, owner: existing.owner });
+    }
+    const entry = { name: cleanName, owner: owner.trim(), ts: Date.now() };
+    fvRegistry[key] = entry;
+    res.status(201).json(entry);
+});
+
+app.delete('/api/fv/files', (req, res) => {
+    const { name, owner } = req.body;
+    if (!name || !owner) return res.status(400).json({ error: 'name and owner are required' });
+    const key = name.trim().toLowerCase();
+    if (!fvRegistry[key]) return res.status(404).json({ error: 'File not found.' });
+    if (fvRegistry[key].owner !== owner.trim())
+        return res.status(403).json({ error: 'forbidden', message: `Only ${fvRegistry[key].owner} can delete this file.` });
+    delete fvRegistry[key];
+    res.json({ success: true });
+});
+
 const PORT = 3000;
 server.listen(PORT, '0.0.0.0', () => {
     console.log(`Server running at http://localhost:${PORT}`);

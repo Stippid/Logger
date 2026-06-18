@@ -18,6 +18,16 @@
             --bg: #f9f9f9; --text: #333; --border: #e0e0e0; --accent: #000; --danger: #dc3545; --surface: #fff; --highlight: #ffeb3b; --highlight-text: #000;
             --heat-1: #c6c6c6; --heat-2: #8c8c8c; --heat-3: #525252; --heat-4: #000000;
         }
+
+        ::selection {
+            background-color: #c0c0c0;
+            color: #111;
+        }
+        body.dark-mode ::selection {
+            background-color: #555;
+            color: #f0f0f0;
+        }
+
         body.dark-mode {
             --bg: #121212; --text: #e0e0e0; --border: #333; --accent: #fff; --danger: #ff4d4d; --surface: #1e1e1e; --highlight: #b3b300; --highlight-text: #fff;
             --heat-1: #555555; --heat-2: #888888; --heat-3: #bbbbbb; --heat-4: #ffffff;
@@ -212,6 +222,107 @@
         .tooltip-sub{font-size:11px;color:#c2c0b6}
         .tooltip-saka{font-size:10px;color:#9c9a92;margin-top:3px}
 
+
+        /* ── FileVault ── */
+        .fv-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 2rem; }
+        .fv-card h3 { font-size: 18px; font-weight: 500; margin-bottom: 6px; }
+        .fv-card p  { font-size: 13px; color: #888; line-height: 1.6; }
+        .fv-welcome-icon { width: 46px; height: 46px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; color: var(--accent); }
+
+        .fv-grid { display: grid; gap: 1.25rem; align-items: start; }
+        .fv-left { display: flex; flex-direction: column; gap: 1.25rem; }
+        .fv-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1.25rem; }
+        .fv-panel-title { font-size: 10px; font-weight: 500; color: #888; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 1rem; }
+
+        .fv-user-badge { display: flex; align-items: center; gap: 7px; font-size: 13px; color: #888; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 7px 11px; margin-bottom: 10px; }
+        .fv-user-dot { width: 7px; height: 7px; background: var(--accent); border-radius: 50%; flex-shrink: 0; }
+
+        .fv-stats { display: flex; gap: 8px; }
+        .fv-stat { flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 10px; text-align: center; }
+        .fv-stat-num { font-size: 22px; font-weight: 500; color: var(--accent); line-height: 1; }
+        .fv-stat-label { font-size: 10px; color: #888; margin-top: 3px; }
+
+        .fv-char-count { font-size: 11px; color: #888; }
+
+        .fv-filter-bar { margin-bottom: 12px; }
+        .fv-filter-count { font-size: 11px; color: #888; }
+
+        .fv-file-list { display: flex; flex-direction: column; gap: 5px; max-height: 460px; overflow-y: auto; }
+        .fv-file-list::-webkit-scrollbar { width: 3px; }
+        .fv-file-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+        .fv-file-item { display: flex; align-items: center; gap: 10px; padding: 9px 12px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; transition: opacity 0.2s; }
+        .fv-file-item.deleting { opacity: 0.3; pointer-events: none; }
+        .fv-file-icon { width: 30px; height: 30px; background: var(--surface); border: 1px solid var(--border); border-radius: 7px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--accent); }
+        .fv-file-icon svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+        .fv-file-details { flex: 1; min-width: 0; }
+        .fv-file-name { font-size: 13px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .fv-file-owner { font-size: 11px; color: #888; margin-top: 2px; }
+        .fv-file-time { font-size: 11px; color: #888; flex-shrink: 0; }
+        .fv-delete-btn { 
+            width: 26px; 
+            height: 26px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            background: transparent; 
+            border: 1px solid transparent; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            opacity: 0.6;
+            transition: opacity 0.15s, background 0.13s; 
+            flex-shrink: 0; 
+            font-size: 14px;
+            color: var(--danger);
+        }
+        .fv-file-item:hover .fv-delete-btn { opacity: 1; }
+        .fv-delete-btn:hover { background: var(--surface); border-color: var(--border); }
+
+        .fv-text-panel { display: flex; flex-direction: column; }
+        .fv-text-list { display: flex; flex-direction: column; gap: 8px; max-height: 600px; overflow-y: auto; padding-right: 2px; }
+        .fv-text-list::-webkit-scrollbar { width: 3px; }
+        .fv-text-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+        .fv-text-item { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 11px 13px; display: flex; flex-direction: column; gap: 8px; transition: opacity 0.2s; }
+        .fv-text-item.pinned { background: var(--surface); border-color: var(--border); border-left: 3px solid var(--accent); }
+        .fv-text-item.deleting { opacity: 0.3; pointer-events: none; }
+        .fv-text-item-header { display: flex; justify-content: space-between; align-items: flex-start; }
+        .fv-text-meta { display: flex; flex-direction: column; gap: 2px; }
+        .fv-text-pinlabel { font-size: 10px; font-weight: 500; color: var(--accent); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 2px; }
+        .fv-text-owner { font-size: 12px; font-weight: 500; }
+        .fv-text-time { font-size: 11px; color: #888; }
+        .fv-text-actions { display: flex; gap: 4px; opacity: 0; transition: opacity 0.15s; }
+        .fv-text-item:hover .fv-text-actions { opacity: 1; }
+        .fv-text-action-btn { width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; background: transparent; border: 1px solid var(--border); border-radius: 6px; cursor: pointer; transition: background 0.13s; }
+        .fv-text-action-btn svg { width: 12px; height: 12px; stroke: #888; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+        .fv-text-action-btn:hover { background: var(--surface); }
+        .fv-text-action-btn.pin-active svg { stroke: var(--accent); }
+        .fv-text-content { font-size: 12px; line-height: 1.65; white-space: pre-wrap; word-break: break-word; max-height: 150px; overflow-y: auto; color: var(--text); }
+        .fv-copy-btn { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 500; color: #888; background: transparent; border: 1px solid var(--border); border-radius: 6px; padding: 4px 9px; cursor: pointer; transition: all 0.13s; align-self: flex-start; font-family: inherit; }
+        .fv-copy-btn:hover { color: var(--text); background: var(--surface); }
+        .fv-copy-btn.copied { color: var(--text); background: var(--surface); }
+        .fv-copy-btn svg { width: 11px; height: 11px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+        .fv-empty { text-align: center; padding: 2.5rem 1rem; color: #888; font-size: 13px; line-height: 1.7; }
+
+        @media (max-width: 960px) {
+            .fv-grid { grid-template-columns: 1fr 1fr; }
+            .fv-left { grid-column: 1; }
+            .fv-text-panel { grid-column: 1 / -1; }
+        }
+        @media (max-width: 600px) {
+            .fv-grid { grid-template-columns: 1fr; }
+            .fv-text-panel { grid-column: 1; }
+        }
+
+        .toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(90px); padding: 10px 20px; border-radius: 8px; font-size: 14px; font-family: 'Fira Mono', monospace; font-weight: 500; color: #fff; pointer-events: none; transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1); z-index: 9999; max-width: 380px; text-align: center; line-height: 1.5;}
+        .toast.show { transform: translateX(-50%) translateY(0); }
+        .toast.error { background: var(--danger); }
+        .toast.success { background: #1D9E75; }
+
+        .tab-btn { cursor: grab; }
+        .tab-btn.dragging { opacity: 0.4; cursor: grabbing; }
+        .tab-btn.drag-over { border-left: 2px solid var(--accent); }
     </style>
 </head>
 <body>
@@ -265,13 +376,14 @@
         </header>
 
         <!-- Tabs -->
-        <div class="tabs">
-            <button class="tab-btn active" id="tabLoggerBtn" onclick="switchTab('logger')">Logger</button>
-            <button class="tab-btn" id="tabOcrBtn" onclick="switchTab('ocr')">Image to Text</button>
-            <button class="tab-btn" id="tabChatBtn" onclick="switchTab('chat')">
-                Chat <span id="globalChatBadge" class="badge" style="display: none;">0</span>
+        <div class="tabs" id="tabBar">
+            <button draggable="true" class="tab-btn active" id="tabLoggerBtn" onclick="switchTab('logger')">Logger</button>
+            <button draggable="true" class="tab-btn" id="tabOcrBtn" onclick="switchTab('ocr')">Image to Text</button>
+            <button draggable="true" class="tab-btn" id="tabChatBtn" onclick="switchTab('chat')">
+                Chat <span id="globalChatBadge" class="badge" style="display:none;">0</span>
             </button>
-            <button class="tab-btn" id="tabHolidaysBtn" onclick="switchTab('holidays')">Holidays</button>
+            <button draggable="true" class="tab-btn" id="tabHolidaysBtn" onclick="switchTab('holidays')">Holidays</button>
+            <button draggable="true" class="tab-btn" id="tabFileVaultBtn" onclick="switchTab('filevault')">FileVault</button>
         </div>
 
         <!-- ================= LOGGER SCREEN ================= -->
@@ -408,927 +520,1194 @@
                 </div>
                 <div class="tooltip-box" id="tooltip"></div>
             </div>
-    </div>
-
-    <!-- Settings Modal -->
-    <div class="modal" id="settingsModal">
-        <div class="modal-content">
-            <h3>Settings</h3>
-            
-            <!-- New Account Management Section -->
-            <div style="margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--border);">
-                <h4 style="margin-top: 0; margin-bottom: 10px;">Account</h4>
-                <input type="text" id="editUsername" placeholder="New Username">
-                <input type="password" id="editPassword" placeholder="New Password">
-                <button onclick="updateAccount()" style="width: 100%; margin-bottom: 10px;">Update Account</button>
-                <button class="btn-danger" onclick="deleteAccount()" style="width: 100%;">Delete Account</button>
-            </div>
-
-            <label style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                Dark Mode
-                <input type="checkbox" id="themeToggle" onchange="toggleTheme()">
-            </label>
-            <button class="btn-secondary" onclick="closeSettings()" style="width: 100%;">Close</button>
         </div>
-    </div>
 
-    <!-- New Chat Modal -->
-    <div class="modal" id="newChatModal">
-        <div class="modal-content">
-            <h3>New Chat / Group</h3>
-            <input type="text" id="groupNameInput" placeholder="Group Name (Optional for 1-on-1)">
-            <div class="user-checkbox-list" id="userCheckboxList">
-                <!-- Users injected here -->
-            </div>
-            <div style="display: flex; gap: 10px;">
-                <button onclick="createNewChat()" style="flex: 1;">Create</button>
-                <button class="btn-secondary" onclick="closeNewChatModal()" style="flex: 1;">Cancel</button>
-            </div>
-        </div>
-    </div>
+        <!-- ================= FILEVAULT SCREEN ================= -->
+        <div id="fileVaultScreen" style="display:none;">
 
-    <script>
-        // --- Global State ---
-        let currentUser = JSON.parse(localStorage.getItem('minimal_user'));
-        let logs = [];
-        let selectedDateFilter = null;
-        let currentHeatmapYear = new Date().getFullYear();
-        let displayLimit = 10;
-        const loadChunk = 10;
-        
-        // Chat State
-        let socket = null;
-        let activeConversationId = null;
-        let chatFileToUpload = null;
+            <!-- Main vault UI — shown after name is set -->
+            <div id="fvMain">
+                <div class="fv-grid">
 
-        // --- Initialization ---
-        if (localStorage.getItem('minimal_theme') === 'dark') {
-            document.body.classList.add('dark-mode');
-            document.getElementById('themeToggle').checked = true;
-        }
+                    <!-- Left col -->
+                    <div class="fv-left">
 
-        if (currentUser) showApp();
-
-        // --- Auth System ---
-        async function register() {
-            const u = document.getElementById('username').value;
-            const p = document.getElementById('password').value;
-            const res = await fetch('/api/register', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username: u, password: p }) });
-            if (res.ok) alert("Registered! You can now log in."); else alert("Username already exists.");
-        }
-
-        async function login() {
-            const u = document.getElementById('username').value;
-            const p = document.getElementById('password').value;
-            const res = await fetch('/api/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username: u, password: p }) });
-            if (res.ok) {
-                currentUser = await res.json();
-                localStorage.setItem('minimal_user', JSON.stringify(currentUser));
-                showApp();
-            } else alert("Invalid credentials.");
-        }
-
-        function logout() {
-            localStorage.removeItem('minimal_user');
-            currentUser = null;
-            if(socket) socket.disconnect();
-            document.getElementById('appScreen').style.display = 'none';
-            document.getElementById('authScreen').style.display = 'flex';
-        }
-
-        function showApp() {
-            document.getElementById('authScreen').style.display = 'none';
-            document.getElementById('appScreen').style.display = 'block';
-            document.getElementById('profileName').innerText = currentUser.username;
-            fetchLogs();
-            initSocket();
-            loadConversations();
-        }
-
-        // --- UI & Settings ---
-        function toggleDropdown() { document.getElementById('profileDropdown').classList.toggle('active'); }
-        function openSettings() { 
-            document.getElementById('settingsModal').classList.add('active'); 
-            document.getElementById('profileDropdown').classList.remove('active'); 
-            
-            // Pre-fill the username, but leave password blank for security
-            document.getElementById('editUsername').value = currentUser.username;
-            document.getElementById('editPassword').value = ''; 
-        }
-
-        async function updateAccount() {
-            const newUsername = document.getElementById('editUsername').value.trim();
-            const newPassword = document.getElementById('editPassword').value.trim();
-            
-            if (!newUsername || !newPassword) return alert("Username and password cannot be empty.");
-
-            const res = await fetch('/api/users', {
-                method: 'PUT',
-                headers: getHeaders(),
-                body: JSON.stringify({ username: newUsername, password: newPassword })
-            });
-
-            if (res.ok) {
-                alert("Account updated successfully!");
-                currentUser.username = newUsername;
-                localStorage.setItem('minimal_user', JSON.stringify(currentUser));
-                document.getElementById('profileName').innerText = currentUser.username;
-                closeSettings();
-            } else {
-                const data = await res.json();
-                alert(data.error || "Failed to update account.");
-            }
-        }
-
-        async function deleteAccount() {
-            if (!confirm("WARNING: This will permanently delete your account and all your logs. Your chat messages will remain for others to see. Proceed?")) return;
-            if (!confirm("Are you absolutely sure? This cannot be undone.")) return;
-
-            await fetch('/api/users', { method: 'DELETE', headers: getHeaders() });
-            alert("Account deleted.");
-            closeSettings();
-            logout();
-        }
-        function closeSettings() { document.getElementById('settingsModal').classList.remove('active'); }
-        function toggleTheme() {
-            if (document.getElementById('themeToggle').checked) { document.body.classList.add('dark-mode'); localStorage.setItem('minimal_theme', 'dark'); } 
-            else { document.body.classList.remove('dark-mode'); localStorage.setItem('minimal_theme', 'light'); }
-        }
-        window.onclick = function(e) { if (!e.target.matches('.profile-btn')) document.getElementById('profileDropdown').classList.remove('active'); }
-
-        function switchTab(tab) {
-            document.getElementById('loggerScreen').style.display = tab === 'logger' ? 'block' : 'none';
-            document.getElementById('ocrScreen').style.display = tab === 'ocr' ? 'block' : 'none';
-            document.getElementById('chatScreen').style.display = tab === 'chat' ? 'block' : 'none';
-            
-            document.getElementById('tabLoggerBtn').classList.toggle('active', tab === 'logger');
-            document.getElementById('tabOcrBtn').classList.toggle('active', tab === 'ocr');
-            document.getElementById('tabChatBtn').classList.toggle('active', tab === 'chat');
-
-            document.getElementById('holidaysScreen').style.display = tab === 'holidays' ? 'block' : 'none';
-            document.getElementById('tabHolidaysBtn').classList.toggle('active', tab === 'holidays');
-
-            if (tab === 'holidays') {
-                curMonth = new Date().getMonth();
-                curYear = new Date().getFullYear();
-                render();
-            }
-        }
-
-        // --- Logger System ---
-        function getHeaders() { return { 'Content-Type': 'application/json', 'x-user-id': currentUser.id }; }
-
-        async function fetchLogs() {
-            const res = await fetch('/api/logs', { headers: getHeaders() });
-            logs = await res.json();
-            if(document.getElementById('heatmapContent').classList.contains('active')) renderHeatmap();
-            renderLogs(document.getElementById('searchInput').value);
-        }
-
-        async function addLog() {
-            const input = document.getElementById('logInput').value;
-            if (!input.trim()) return;
-            const now = new Date();
-            await fetch('/api/logs', { method: 'POST', headers: getHeaders(), body: JSON.stringify({ text: input, date: now.toLocaleDateString(), time: now.toLocaleTimeString(), timestamp: Date.now() }) });
-            document.getElementById('logInput').value = '';
-            fetchLogs();
-        }
-
-        async function deleteLog(id) {
-            if (!confirm("Delete this log?")) return;
-            await fetch(`/api/logs/${id}`, { method: 'DELETE', headers: getHeaders() });
-            fetchLogs();
-        }
-
-        function editLog(id) {
-            const log = logs.find(l => l.id === id);
-            document.getElementById(`log-content-${id}`).innerHTML = `
-                <textarea id="edit-input-${id}" class="edit-area">${log.text}</textarea>
-                <button class="btn-edit" onclick="saveEdit(${id})" style="margin-top: 5px;">Save</button>
-                <button class="btn-secondary" onclick="renderLogs()" style="margin-top: 5px; padding: 5px 10px; font-size: 12px;">Cancel</button>
-            `;
-        }
-
-        async function saveEdit(id) {
-            const newText = document.getElementById(`edit-input-${id}`).value;
-            await fetch(`/api/logs/${id}`, { method: 'PUT', headers: getHeaders(), body: JSON.stringify({ text: newText }) });
-            fetchLogs();
-        }
-
-        // --- Heatmap & Infinite Scroll ---
-        function toggleHeatmap() {
-            const content = document.getElementById('heatmapContent');
-            const icon = document.getElementById('heatmapToggleIcon');
-            if (content.classList.contains('active')) { content.classList.remove('active'); icon.innerText = '▼'; } 
-            else { content.classList.add('active'); icon.innerText = '▲'; renderHeatmap(); }
-        }
-
-        function changeYear(delta) { currentHeatmapYear += delta; renderHeatmap(); }
-
-        function renderHeatmap() {
-            const container = document.getElementById('heatmap');
-            container.innerHTML = '';
-            document.getElementById('heatmapYearDisplay').innerText = currentHeatmapYear;
-            
-            const logsByDate = {};
-            logs.forEach(l => { if(!logsByDate[l.date]) logsByDate[l.date] = []; logsByDate[l.date].push(l); });
-
-            for (let month = 0; month < 12; month++) {
-                const monthDiv = document.createElement('div');
-                monthDiv.className = 'heatmap-month';
-                const daysInMonth = new Date(currentHeatmapYear, month + 1, 0).getDate();
-                const firstDayOfWeek = new Date(currentHeatmapYear, month, 1).getDay();
-                
-                for (let i = 0; i < firstDayOfWeek; i++) {
-                    const empty = document.createElement('div'); empty.className = 'heat-cell empty'; monthDiv.appendChild(empty);
-                }
-                
-                for (let day = 1; day <= daysInMonth; day++) {
-                    const d = new Date(currentHeatmapYear, month, day);
-                    const dateStr = d.toLocaleDateString();
-                    const dayLogs = logsByDate[dateStr] || [];
-                    const count = dayLogs.length;
-                    
-                    let level = 0;
-                    if(count === 1) level = 1; else if(count === 2) level = 2; else if(count >= 3 && count <= 4) level = 3; else if(count > 4) level = 4;
-
-                    const cell = document.createElement('div');
-                    cell.className = 'heat-cell';
-                    if(level > 0) cell.setAttribute('data-level', level);
-                    
-                    let previewText = `${dateStr}: ${count} logs\n`;
-                    if(count > 0) {
-                        previewText += dayLogs.slice(0, 3).map(l => '- ' + l.text.substring(0, 25).replace(/\n/g, ' ') + '...').join('\n');
-                        if(count > 3) previewText += `\n...and ${count - 3} more`;
-                    } else previewText += "No logs";
-
-                    cell.onmouseover = (e) => { const tt = document.getElementById('tooltip'); tt.innerText = previewText; tt.style.display = 'block'; tt.style.left = e.pageX + 15 + 'px'; tt.style.top = e.pageY + 15 + 'px'; };
-                    cell.onmouseout = () => document.getElementById('tooltip').style.display = 'none';
-                    cell.onclick = () => { if(count > 0) { selectedDateFilter = dateStr; displayLimit = 10; renderLogs(document.getElementById('searchInput').value); } };
-                    monthDiv.appendChild(cell);
-                }
-                container.appendChild(monthDiv);
-            }
-        }
-
-        function clearFilter() { selectedDateFilter = null; renderLogs(document.getElementById('searchInput').value); }
-        function escapeHTML(str) { return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag])); }
-        function highlightText(text, query) {
-            const escapedText = escapeHTML(text);
-            if (!query) return escapedText;
-            return escapedText.replace(new RegExp(`(${escapeHTML(query)})`, 'gi'), '<span class="highlight">$1</span>');
-        }
-
-        function renderLogs(query = '') {
-            const container = document.getElementById('logContainer');
-            container.innerHTML = '';
-            let filteredLogs = logs;
-
-            if (selectedDateFilter) {
-                filteredLogs = filteredLogs.filter(l => l.date === selectedDateFilter);
-                document.getElementById('filterNotice').style.display = 'flex';
-                document.getElementById('filterDateText').innerText = selectedDateFilter;
-            } else document.getElementById('filterNotice').style.display = 'none';
-
-            filteredLogs = filteredLogs.filter(l => l.text.toLowerCase().includes(query.toLowerCase()) || l.date.includes(query) || l.time.includes(query));
-            const logsToRender = filteredLogs.slice(0, displayLimit);
-
-            logsToRender.forEach(l => {
-                const div = document.createElement('div');
-                div.className = 'log-entry';
-                div.innerHTML = `
-                    <div class="log-meta">
-                        <span>${highlightText(l.date, query)} at ${highlightText(l.time, query)}</span>
-                        <div class="log-actions">
-                            <button class="btn-edit" onclick="editLog(${l.id})">Edit</button>
-                            <button class="btn-danger" onclick="deleteLog(${l.id})">Delete</button>
+                        <!-- Add file -->
+                        <div class="fv-panel">
+                            <div class="fv-panel-title">Add file</div>
+                            <div class="fv-user-badge">
+                                <div class="fv-user-dot"></div>
+                                Signed in as <strong id="fvDisplayUser" style="color:var(--accent);"></strong>
+                            </div>
+                            <input type="text" id="fvFileInput" placeholder="e.g. report_q4.pdf" maxlength="120" autocomplete="off" style="margin-bottom:8px;">
+                            <button onclick="fvAddFile()" style="width:100%; margin-bottom:1rem;">Add file name</button>
+                            <div class="fv-stats">
+                                <div class="fv-stat"><div class="fv-stat-num" id="fvStatTotal">0</div><div class="fv-stat-label">total files</div></div>
+                                <div class="fv-stat"><div class="fv-stat-num" id="fvStatMine">0</div><div class="fv-stat-label">added by you</div></div>
+                            </div>
                         </div>
+
                     </div>
-                    <div id="log-content-${l.id}"><pre>${highlightText(l.text, query)}</pre></div>
+
+                    <!-- Registry -->
+                    <div class="fv-panel">
+                        <div class="fv-panel-title">Registry</div>
+                        <div class="fv-filter-bar">
+                            <div style="display:flex; gap:8px;">
+                                <input type="text" id="fvFilterName" placeholder="Search file names…" oninput="fvRenderFiles()" style="flex:1;">
+                                <input type="text" id="fvFilterUser" placeholder="Username…" oninput="fvRenderFiles()" style="flex:1;">
+                            </div>
+                            <div style="display:flex; gap:8px; margin-top:6px;">
+                                <input type="datetime-local" id="fvFilterFrom" oninput="fvRenderFiles()" style="flex:1;">
+                                <input type="datetime-local" id="fvFilterTo" oninput="fvRenderFiles()" style="flex:1;">
+                            </div>
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:4px; min-height:20px;">
+                                <span class="fv-filter-count" id="fvFilterCount"></span>
+                                <button class="btn-danger" id="fvFilterClear" onclick="fvClearFilters()" style="display:none; font-size:11px; padding:3px 8px;">✕ Clear</button>
+                            </div>
+                        </div>
+                        <div class="fv-file-list" id="fvFileList"><div class="fv-empty">Loading…</div></div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Modal -->
+        <div class="modal" id="settingsModal">
+            <div class="modal-content">
+                <h3>Settings</h3>
+                
+                <!-- New Account Management Section -->
+                <div style="margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--border);">
+                    <h4 style="margin-top: 0; margin-bottom: 10px;">Account</h4>
+                    <input type="text" id="editUsername" placeholder="New Username">
+                    <input type="password" id="editPassword" placeholder="New Password">
+                    <button onclick="updateAccount()" style="width: 100%; margin-bottom: 10px;">Update Account</button>
+                    <button class="btn-danger" onclick="deleteAccount()" style="width: 100%;">Delete Account</button>
+                </div>
+
+                <label style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    Dark Mode
+                    <input type="checkbox" id="themeToggle" onchange="toggleTheme()">
+                </label>
+                <button class="btn-secondary" onclick="closeSettings()" style="width: 100%;">Close</button>
+            </div>
+        </div>
+
+        <!-- New Chat Modal -->
+        <div class="modal" id="newChatModal">
+            <div class="modal-content">
+                <h3>New Chat / Group</h3>
+                <input type="text" id="groupNameInput" placeholder="Group Name (Optional for 1-on-1)">
+                <div class="user-checkbox-list" id="userCheckboxList">
+                    <!-- Users injected here -->
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <button onclick="createNewChat()" style="flex: 1;">Create</button>
+                    <button class="btn-secondary" onclick="closeNewChatModal()" style="flex: 1;">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="toast" id="toast"></div>
+    </div>
+
+        <script>
+            // --- Global State ---
+            let currentUser = JSON.parse(localStorage.getItem('minimal_user'));
+            let logs = [];
+            let selectedDateFilter = null;
+            let currentHeatmapYear = new Date().getFullYear();
+            let displayLimit = 10;
+            const loadChunk = 10;
+            
+            // Chat State
+            let socket = null;
+            let activeConversationId = null;
+            let chatFileToUpload = null;
+
+            // --- Initialization ---
+            if (localStorage.getItem('minimal_theme') === 'dark') {
+                document.body.classList.add('dark-mode');
+                document.getElementById('themeToggle').checked = true;
+            }
+
+            if (currentUser) showApp();
+
+            // ── Tab order persistence & drag-to-reorder ──
+            function saveTabOrder() {
+                const order = Array.from(document.querySelectorAll('#tabBar .tab-btn'))
+                    .map(btn => btn.id);
+                localStorage.setItem('drop_tab_order_' + currentUser.id, JSON.stringify(order));
+            }
+
+            function restoreTabOrder() {
+                const saved = localStorage.getItem('drop_tab_order_' + currentUser.id);
+                if (!saved) return;
+                const order = JSON.parse(saved);
+                const bar = document.getElementById('tabBar');
+                order.forEach(id => {
+                    const btn = document.getElementById(id);
+                    if (btn) bar.appendChild(btn); // moves to end in saved order
+                });
+            }
+
+            function restoreLastTab() {
+                const last = localStorage.getItem('drop_last_tab_' + currentUser.id);
+                if (last) switchTab(last);
+            }
+
+            function initTabDrag() {
+                const bar = document.getElementById('tabBar');
+                let draggedBtn = null;
+
+                bar.addEventListener('dragstart', e => {
+                    draggedBtn = e.target.closest('.tab-btn');
+                    if (!draggedBtn) return;
+                    setTimeout(() => draggedBtn.classList.add('dragging'), 0);
+                    e.dataTransfer.effectAllowed = 'move';
+                });
+
+                bar.addEventListener('dragend', e => {
+                    const btn = e.target.closest('.tab-btn');
+                    if (btn) btn.classList.remove('dragging');
+                    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('drag-over'));
+                    draggedBtn = null;
+                    saveTabOrder();
+                });
+
+                bar.addEventListener('dragover', e => {
+                    e.preventDefault();
+                    e.dataTransfer.dropEffect = 'move';
+                    const target = e.target.closest('.tab-btn');
+                    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('drag-over'));
+                    if (target && target !== draggedBtn) target.classList.add('drag-over');
+                });
+
+                bar.addEventListener('dragleave', e => {
+                    const target = e.target.closest('.tab-btn');
+                    if (target) target.classList.remove('drag-over');
+                });
+
+                bar.addEventListener('drop', e => {
+                    e.preventDefault();
+                    const target = e.target.closest('.tab-btn');
+                    if (!target || !draggedBtn || target === draggedBtn) return;
+                    target.classList.remove('drag-over');
+
+                    // Insert dragged before or after target based on mouse position
+                    const rect = target.getBoundingClientRect();
+                    const after = e.clientX > rect.left + rect.width / 2;
+                    if (after) target.after(draggedBtn);
+                    else target.before(draggedBtn);
+                });
+            }
+
+            // --- Auth System ---
+            async function register() {
+                const u = document.getElementById('username').value;
+                const p = document.getElementById('password').value;
+                const res = await fetch('/api/register', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username: u, password: p }) });
+                if (res.ok) showToast("Registered! You can now log in.", 'success'); else showToast("Username already exists.");
+            }
+
+            async function login() {
+                const u = document.getElementById('username').value;
+                const p = document.getElementById('password').value;
+                const res = await fetch('/api/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username: u, password: p }) });
+                if (res.ok) {
+                    currentUser = await res.json();
+                    localStorage.setItem('minimal_user', JSON.stringify(currentUser));
+                    showApp();
+                } else showToast("Invalid credentials.");
+            }
+
+            function logout() {
+                localStorage.removeItem('minimal_user');
+                currentUser = null;
+                if(socket) socket.disconnect();
+                document.getElementById('appScreen').style.display = 'none';
+                document.getElementById('authScreen').style.display = 'flex';
+            }
+
+            function showApp() {
+                document.getElementById('authScreen').style.display = 'none';
+                document.getElementById('appScreen').style.display = 'block';
+                document.getElementById('profileName').innerText = currentUser.username;
+                fetchLogs();
+                initSocket();
+                loadConversations();
+                restoreTabOrder();
+                initTabDrag();
+                restoreLastTab();
+            }
+
+            // --- UI & Settings ---
+            function toggleDropdown() { document.getElementById('profileDropdown').classList.toggle('active'); }
+            function openSettings() { 
+                document.getElementById('settingsModal').classList.add('active'); 
+                document.getElementById('profileDropdown').classList.remove('active'); 
+                
+                // Pre-fill the username, but leave password blank for security
+                document.getElementById('editUsername').value = currentUser.username;
+                document.getElementById('editPassword').value = ''; 
+            }
+
+            async function updateAccount() {
+                const newUsername = document.getElementById('editUsername').value.trim();
+                const newPassword = document.getElementById('editPassword').value.trim();
+                
+                if (!newUsername || !newPassword) return showToast("Username and password cannot be empty.");
+
+                const res = await fetch('/api/users', {
+                    method: 'PUT',
+                    headers: getHeaders(),
+                    body: JSON.stringify({ username: newUsername, password: newPassword })
+                });
+
+                if (res.ok) {
+                    showToast("Account updated successfully!", 'success');
+                    currentUser.username = newUsername;
+                    localStorage.setItem('minimal_user', JSON.stringify(currentUser));
+                    document.getElementById('profileName').innerText = currentUser.username;
+                    closeSettings();
+                } else {
+                    const data = await res.json();
+                    alert(data.error || "Failed to update account.");
+                }
+            }
+
+            async function deleteAccount() {
+                if (!confirm("WARNING: This will permanently delete your account and all your logs. Your chat messages will remain for others to see. Proceed?")) return;
+                if (!confirm("Are you absolutely sure? This cannot be undone.")) return;
+
+                await fetch('/api/users', { method: 'DELETE', headers: getHeaders() });
+                showToast("Account deleted.", 'success');
+                closeSettings();
+                logout();
+            }
+            function closeSettings() { document.getElementById('settingsModal').classList.remove('active'); }
+            function toggleTheme() {
+                if (document.getElementById('themeToggle').checked) { document.body.classList.add('dark-mode'); localStorage.setItem('minimal_theme', 'dark'); } 
+                else { document.body.classList.remove('dark-mode'); localStorage.setItem('minimal_theme', 'light'); }
+            }
+            window.onclick = function(e) { if (!e.target.matches('.profile-btn')) document.getElementById('profileDropdown').classList.remove('active'); }
+
+            function switchTab(tab) {
+                if (currentUser) localStorage.setItem('drop_last_tab_' + currentUser.id, tab);
+                document.getElementById('loggerScreen').style.display = tab === 'logger' ? 'block' : 'none';
+                document.getElementById('ocrScreen').style.display = tab === 'ocr' ? 'block' : 'none';
+                document.getElementById('chatScreen').style.display = tab === 'chat' ? 'block' : 'none';
+                document.getElementById('holidaysScreen').style.display = tab === 'holidays' ? 'block' : 'none';
+                document.getElementById('fileVaultScreen').style.display = tab === 'filevault' ? 'block' : 'none';
+
+                document.getElementById('tabLoggerBtn').classList.toggle('active', tab === 'logger');
+                document.getElementById('tabOcrBtn').classList.toggle('active', tab === 'ocr');
+                document.getElementById('tabChatBtn').classList.toggle('active', tab === 'chat');
+                document.getElementById('tabHolidaysBtn').classList.toggle('active', tab === 'holidays');
+                document.getElementById('tabFileVaultBtn').classList.toggle('active', tab === 'filevault');
+
+                if (tab === 'holidays') { curMonth = new Date().getMonth(); curYear = new Date().getFullYear(); render(); }
+                if (tab === 'filevault') {
+                    if (!fvUser && currentUser) {
+                        fvUser = currentUser.username;
+                        document.getElementById('fvDisplayUser').textContent = fvUser;
+                        document.getElementById('fvMain').style.display = 'block';
+                        fvFetchFiles();
+                        document.getElementById('fvFileInput').addEventListener('keydown', e => { if (e.key === 'Enter') fvAddFile(); });
+                    }
+                }
+            }
+
+            // --- Logger System ---
+            function getHeaders() { return { 'Content-Type': 'application/json', 'x-user-id': currentUser.id }; }
+
+            async function fetchLogs() {
+                const res = await fetch('/api/logs', { headers: getHeaders() });
+                logs = await res.json();
+                if(document.getElementById('heatmapContent').classList.contains('active')) renderHeatmap();
+                renderLogs(document.getElementById('searchInput').value);
+            }
+
+            async function addLog() {
+                const input = document.getElementById('logInput').value;
+                if (!input.trim()) return;
+                const now = new Date();
+                await fetch('/api/logs', { method: 'POST', headers: getHeaders(), body: JSON.stringify({ text: input, date: now.toLocaleDateString(), time: now.toLocaleTimeString(), timestamp: Date.now() }) });
+                document.getElementById('logInput').value = '';
+                fetchLogs();
+            }
+
+            async function deleteLog(id) {
+                if (!confirm("Delete this log?")) return;
+                await fetch(`/api/logs/${id}`, { method: 'DELETE', headers: getHeaders() });
+                fetchLogs();
+            }
+
+            function editLog(id) {
+                const log = logs.find(l => l.id === id);
+                document.getElementById(`log-content-${id}`).innerHTML = `
+                    <textarea id="edit-input-${id}" class="edit-area">${log.text}</textarea>
+                    <button class="btn-edit" onclick="saveEdit(${id})" style="margin-top: 5px;">Save</button>
+                    <button class="btn-secondary" onclick="renderLogs()" style="margin-top: 5px; padding: 5px 10px; font-size: 12px;">Cancel</button>
+                `;
+            }
+
+            async function saveEdit(id) {
+                const newText = document.getElementById(`edit-input-${id}`).value;
+                await fetch(`/api/logs/${id}`, { method: 'PUT', headers: getHeaders(), body: JSON.stringify({ text: newText }) });
+                fetchLogs();
+            }
+
+            // --- Heatmap & Infinite Scroll ---
+            function toggleHeatmap() {
+                const content = document.getElementById('heatmapContent');
+                const icon = document.getElementById('heatmapToggleIcon');
+                if (content.classList.contains('active')) { content.classList.remove('active'); icon.innerText = '▼'; } 
+                else { content.classList.add('active'); icon.innerText = '▲'; renderHeatmap(); }
+            }
+
+            function changeYear(delta) { currentHeatmapYear += delta; renderHeatmap(); }
+
+            function renderHeatmap() {
+                const container = document.getElementById('heatmap');
+                container.innerHTML = '';
+                document.getElementById('heatmapYearDisplay').innerText = currentHeatmapYear;
+                
+                const logsByDate = {};
+                logs.forEach(l => { if(!logsByDate[l.date]) logsByDate[l.date] = []; logsByDate[l.date].push(l); });
+
+                for (let month = 0; month < 12; month++) {
+                    const monthDiv = document.createElement('div');
+                    monthDiv.className = 'heatmap-month';
+                    const daysInMonth = new Date(currentHeatmapYear, month + 1, 0).getDate();
+                    const firstDayOfWeek = new Date(currentHeatmapYear, month, 1).getDay();
+                    
+                    for (let i = 0; i < firstDayOfWeek; i++) {
+                        const empty = document.createElement('div'); empty.className = 'heat-cell empty'; monthDiv.appendChild(empty);
+                    }
+                    
+                    for (let day = 1; day <= daysInMonth; day++) {
+                        const d = new Date(currentHeatmapYear, month, day);
+                        const dateStr = d.toLocaleDateString();
+                        const dayLogs = logsByDate[dateStr] || [];
+                        const count = dayLogs.length;
+                        
+                        let level = 0;
+                        if(count === 1) level = 1; else if(count === 2) level = 2; else if(count >= 3 && count <= 4) level = 3; else if(count > 4) level = 4;
+
+                        const cell = document.createElement('div');
+                        cell.className = 'heat-cell';
+                        if(level > 0) cell.setAttribute('data-level', level);
+                        
+                        let previewText = `${dateStr}: ${count} logs\n`;
+                        if(count > 0) {
+                            previewText += dayLogs.slice(0, 3).map(l => '- ' + l.text.substring(0, 25).replace(/\n/g, ' ') + '...').join('\n');
+                            if(count > 3) previewText += `\n...and ${count - 3} more`;
+                        } else previewText += "No logs";
+
+                        cell.onmouseover = (e) => { const tt = document.getElementById('tooltip'); tt.innerText = previewText; tt.style.display = 'block'; tt.style.left = e.pageX + 15 + 'px'; tt.style.top = e.pageY + 15 + 'px'; };
+                        cell.onmouseout = () => document.getElementById('tooltip').style.display = 'none';
+                        cell.onclick = () => { if(count > 0) { selectedDateFilter = dateStr; displayLimit = 10; renderLogs(document.getElementById('searchInput').value); } };
+                        monthDiv.appendChild(cell);
+                    }
+                    container.appendChild(monthDiv);
+                }
+            }
+
+            function clearFilter() { selectedDateFilter = null; renderLogs(document.getElementById('searchInput').value); }
+            function escapeHTML(str) { return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag])); }
+            function highlightText(text, query) {
+                const escapedText = escapeHTML(text);
+                if (!query) return escapedText;
+                return escapedText.replace(new RegExp(`(${escapeHTML(query)})`, 'gi'), '<span class="highlight">$1</span>');
+            }
+
+            function renderLogs(query = '') {
+                const container = document.getElementById('logContainer');
+                container.innerHTML = '';
+                let filteredLogs = logs;
+
+                if (selectedDateFilter) {
+                    filteredLogs = filteredLogs.filter(l => l.date === selectedDateFilter);
+                    document.getElementById('filterNotice').style.display = 'flex';
+                    document.getElementById('filterDateText').innerText = selectedDateFilter;
+                } else document.getElementById('filterNotice').style.display = 'none';
+
+                filteredLogs = filteredLogs.filter(l => l.text.toLowerCase().includes(query.toLowerCase()) || l.date.includes(query) || l.time.includes(query));
+                const logsToRender = filteredLogs.slice(0, displayLimit);
+
+                logsToRender.forEach(l => {
+                    const div = document.createElement('div');
+                    div.className = 'log-entry';
+                    div.innerHTML = `
+                        <div class="log-meta">
+                            <span>${highlightText(l.date, query)} at ${highlightText(l.time, query)}</span>
+                            <div class="log-actions">
+                                <button class="btn-edit" onclick="editLog(${l.id})">Edit</button>
+                                <button class="btn-danger" onclick="deleteLog(${l.id})">Delete</button>
+                            </div>
+                        </div>
+                        <div id="log-content-${l.id}"><pre>${highlightText(l.text, query)}</pre></div>
+                    `;
+                    container.appendChild(div);
+                });
+
+                document.getElementById('scrollSentinel').style.display = filteredLogs.length > displayLimit ? 'block' : 'none';
+            }
+
+            document.getElementById('searchInput').addEventListener('input', (e) => { displayLimit = 10; renderLogs(e.target.value); });
+            const observer = new IntersectionObserver((entries) => { if (entries[0].isIntersecting) { displayLimit += loadChunk; renderLogs(document.getElementById('searchInput').value); } }, { rootMargin: "100px" });
+            observer.observe(document.getElementById('scrollSentinel'));
+
+            function exportDocument() {
+                if (logs.length === 0) return alert("No logs to export.");
+                let docContent = `# Polished Log Document\nUser: ${currentUser.username}\nGenerated on: ${new Date().toLocaleString()}\n\n---\n\n`;
+                [...logs].sort((a, b) => a.timestamp - b.timestamp).forEach(l => { docContent += `### ${l.date} - ${l.time}\n\n\`\`\`text\n${l.text}\n\`\`\`\n\n---\n\n`; });
+                const blob = new Blob([docContent], { type: 'text/markdown' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a'); a.href = url; a.download = `${currentUser.username}_Logs_${Date.now()}.md`; a.click(); URL.revokeObjectURL(url);
+            }
+
+            // --- OCR Logic ---
+            let currentOcrFile = null;
+            function previewOcrImage(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+                currentOcrFile = file;
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.getElementById('ocrImagePreview');
+                    img.src = e.target.result; img.style.display = 'block';
+                    document.getElementById('ocrPlaceholder').style.display = 'none';
+                    document.getElementById('convertBtn').style.display = 'block';
+                    document.getElementById('ocrResult').value = '';
+                }
+                reader.readAsDataURL(file);
+            }
+
+            async function performOcr() {
+                if (!currentOcrFile) return;
+                const loadingText = document.getElementById('ocrLoading');
+                const convertBtn = document.getElementById('convertBtn');
+                loadingText.style.display = 'block'; convertBtn.disabled = true; convertBtn.innerText = 'Converting...';
+                try {
+                    const result = await Tesseract.recognize(currentOcrFile, 'eng');
+                    document.getElementById('ocrResult').value = result.data.text;
+                } catch (error) { showToast("Error extracting text."); } 
+                finally { loadingText.style.display = 'none'; convertBtn.disabled = false; convertBtn.innerText = 'Convert to Text'; }
+            }
+
+            function copyOcrText() {
+                const text = document.getElementById('ocrResult').value;
+                if (!text) return showToast("No text to copy!");
+                navigator.clipboard.writeText(text).then(() => showToast("Copied to clipboard!", 'success'));
+            }
+
+            function addOcrToLog() {
+                const text = document.getElementById('ocrResult').value;
+                if (!text.trim()) return showToast("No text to add!");
+                switchTab('logger');
+                const logInput = document.getElementById('logInput');
+                logInput.value = text; logInput.focus();
+            }
+
+            // ==========================================
+            // CHAT & SOCKET.IO LOGIC
+            // ==========================================
+            function initSocket() {
+                socket = io();
+                socket.emit('register', currentUser.id);
+
+                socket.on('receive_message', (msg) => {
+                    if (msg.conversation_id === activeConversationId) {
+                        appendMessageToUI(msg);
+                        scrollToBottom();
+                        // Mark as read immediately since we are looking at it
+                        fetch(`/api/conversations/${activeConversationId}/read`, { method: 'POST', headers: getHeaders() });
+                    }
+                });
+
+                socket.on('new_message_notification', () => loadConversations());
+
+                socket.on('chat_deleted_notification', (convId) => {
+                    if (activeConversationId === convId) {
+                        clearActiveChat();
+                        showToast("This chat was deleted.");
+                    }
+                    loadConversations();
+                });
+            }
+
+            async function loadConversations() {
+                const res = await fetch('/api/conversations', { headers: getHeaders() });
+                const convos = await res.json();
+                const list = document.getElementById('chatList');
+                list.innerHTML = '';
+                
+                let totalUnread = 0;
+
+                convos.forEach(c => {
+                    totalUnread += c.unread_count;
+
+                    const div = document.createElement('div');
+                    div.className = `chat-item ${c.id === activeConversationId ? 'active' : ''}`;
+                    
+                    const title = c.is_group ? `👥 ${c.name}` : `👤 ${c.other_user}`;
+                    const badgeHtml = c.unread_count > 0 && c.id !== activeConversationId ? `<span class="badge">${c.unread_count}</span>` : '';
+                    
+                    div.innerHTML = `<span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${title}</span> ${badgeHtml}`;
+                    div.onclick = () => selectConversation(c.id, title, c.is_group, c.admin_id, div);
+                    list.appendChild(div);
+                });
+
+                // Right after the forEach loop, replace the existing globalBadge block with:
+                const globalBadge = document.getElementById('globalChatBadge');
+                if (totalUnread > 0) {
+                    globalBadge.innerText = totalUnread;
+                    globalBadge.style.display = 'inline-block';
+                    updateFaviconBadge(totalUnread);
+                } else {
+                    globalBadge.style.display = 'none';
+                    updateFaviconBadge(0); // Clears the badge
+                }
+            }
+
+            async function selectConversation(id, title, isGroup, adminId, clickedEl) {
+                activeConversationId = id;
+                
+                // Mark as read in the database
+                await fetch(`/api/conversations/${id}/read`, { method: 'POST', headers: getHeaders() });
+                loadConversations(); // Refresh sidebar to clear the badge
+                
+                const header = document.getElementById('activeChatHeader');
+                header.style.display = 'flex';
+                header.style.justifyContent = 'space-between';
+                header.style.alignItems = 'center';
+                
+                let buttonsHtml = `<div style="display:flex; gap:5px;">`;
+                if (isGroup) {
+                    buttonsHtml += `<button class="btn-secondary btn-small" onclick="leaveChat()">Leave</button>`;
+                    if (currentUser.id === adminId) {
+                        buttonsHtml += `<button class="btn-danger btn-small" onclick="deleteChat()">Delete Group</button>`;
+                    }
+                } else {
+                    buttonsHtml += `<button class="btn-danger btn-small" onclick="deleteChat()">Delete Chat</button>`;
+                }
+                buttonsHtml += `</div>`;
+                
+                header.innerHTML = `<span>${title}</span> ${buttonsHtml}`;
+                document.getElementById('chatInputArea').style.display = 'flex';
+                
+                document.querySelectorAll('.chat-item').forEach(el => el.classList.remove('active'));
+                if (clickedEl) clickedEl.classList.add('active');
+
+                socket.emit('join_conversation', id);
+
+                const res = await fetch(`/api/messages/${id}`);
+                const messages = await res.json();
+                
+                const container = document.getElementById('chatMessages');
+                container.innerHTML = '';
+                messages.forEach(appendMessageToUI);
+                scrollToBottom();
+            }
+
+            async function leaveChat() {
+                if (!confirm("Are you sure you want to leave this group?")) return;
+                await fetch(`/api/conversations/${activeConversationId}/leave`, { method: 'POST', headers: getHeaders() });
+                clearActiveChat();
+                loadConversations();
+            }
+
+            async function deleteChat() {
+                if (!confirm("Are you sure you want to permanently delete this chat for EVERYONE?")) return;
+                
+                const res = await fetch(`/api/conversations/${activeConversationId}`, { method: 'DELETE', headers: getHeaders() });
+                
+                if (!res.ok) {
+                    const data = await res.json();
+                    return alert(data.error || "Failed to delete chat.");
+                }
+                
+                socket.emit('chat_deleted', activeConversationId); 
+                clearActiveChat();
+                loadConversations();
+            }
+
+            function clearActiveChat() {
+                activeConversationId = null;
+                const header = document.getElementById('activeChatHeader');
+                header.innerHTML = 'Select a chat to start messaging';
+                header.style.display = 'block';
+                document.getElementById('chatMessages').innerHTML = '';
+                document.getElementById('chatInputArea').style.display = 'none';
+            }
+
+            async function openNewChatModal() {
+                const res = await fetch('/api/users', { headers: getHeaders() });
+                const users = await res.json();
+                const list = document.getElementById('userCheckboxList');
+                list.innerHTML = '';
+                
+                users.forEach(u => {
+                    if(u.id === currentUser.id) return;
+                    list.innerHTML += `<label><input type="checkbox" value="${u.id}"> ${u.username}</label>`;
+                });
+                document.getElementById('newChatModal').classList.add('active');
+            }
+
+            function closeNewChatModal() {
+                document.getElementById('newChatModal').classList.remove('active');
+                document.getElementById('groupNameInput').value = '';
+            }
+
+            async function createNewChat() {
+                const checkboxes = document.querySelectorAll('#userCheckboxList input:checked');
+                const selectedIds = Array.from(checkboxes).map(cb => parseInt(cb.value));
+                if(selectedIds.length === 0) return showToast("Select at least one user.");
+                
+                const isGroup = selectedIds.length > 1;
+                const name = document.getElementById('groupNameInput').value;
+                if(isGroup && !name.trim()) return showToast("Please provide a group name.");
+
+                selectedIds.push(currentUser.id); // Add myself
+
+                const res = await fetch('/api/conversations', {
+                    method: 'POST', headers: getHeaders(),
+                    body: JSON.stringify({ is_group: isGroup, name: name, participant_ids: selectedIds })
+                });
+                
+                const data = await res.json();
+                
+                if (data.exists) {
+                    showToast("A chat with this user already exists.");
+                }
+                
+                closeNewChatModal();
+                loadConversations();
+            }
+
+            function handleChatAttachment(event) {
+                const file = event.target.files[0];
+                if(!file) return;
+                chatFileToUpload = file;
+                document.getElementById('chatAttachmentName').innerText = file.name;
+                document.getElementById('chatAttachmentPreview').style.display = 'flex';
+            }
+
+            function clearChatAttachment() {
+                chatFileToUpload = null;
+                document.getElementById('chatFileInput').value = '';
+                document.getElementById('chatAttachmentPreview').style.display = 'none';
+            }
+
+            async function sendChatMessage() {
+                const textInput = document.getElementById('chatTextInput');
+                const text = textInput.value.trim();
+                const sendBtn = document.getElementById('chatSendBtn');
+                
+                if (!text && !chatFileToUpload) return;
+
+                sendBtn.disabled = true;
+                sendBtn.innerText = 'Sending...';
+
+                let fileUrl = null;
+                let fileName = null;
+
+                // 1. Upload file if exists (Handles GBs via Multer stream)
+                if (chatFileToUpload) {
+                    const formData = new FormData();
+                    formData.append('file', chatFileToUpload);
+                    
+                    try {
+                        const res = await fetch('/api/upload', { method: 'POST', body: formData });
+                        const data = await res.json();
+                        fileUrl = data.file_url;
+                        fileName = data.file_name;
+                    } catch (e) {
+                        alert("File upload failed.");
+                        sendBtn.disabled = false;
+                        sendBtn.innerText = 'Send';
+                        return;
+                    }
+                }
+
+                // 2. Send message via Socket
+                const msgData = {
+                    conversation_id: activeConversationId,
+                    sender_id: currentUser.id,
+                    text: text,
+                    file_url: fileUrl,
+                    file_name: fileName,
+                    timestamp: Date.now()
+                };
+
+                socket.emit('send_message', msgData);
+
+                // Cleanup UI
+                textInput.value = '';
+                clearChatAttachment();
+                sendBtn.disabled = false;
+                sendBtn.innerText = 'Send';
+            }
+
+            function appendMessageToUI(msg) {
+                const container = document.getElementById('chatMessages');
+                const isMine = msg.sender_id === currentUser.id;
+                const timeStr = new Date(msg.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                
+                let contentHtml = '';
+                if (msg.text) contentHtml += `<div>${escapeHTML(msg.text)}</div>`;
+                
+                if (msg.file_url) {
+                    const ext = msg.file_name.split('.').pop().toLowerCase();
+                    if (['png', 'jpg', 'jpeg', 'gif', 'webp'].includes(ext)) {
+                        contentHtml += `<img src="${msg.file_url}" class="chat-img-attachment" onclick="window.open('${msg.file_url}', '_blank')">`;
+                    } else {
+                        contentHtml += `
+                            <a href="${msg.file_url}" download="${msg.file_name}" class="chat-file-attachment">
+                                📄 ${escapeHTML(msg.file_name)} ⬇️
+                            </a>
+                        `;
+                    }
+                }
+
+                const div = document.createElement('div');
+                div.className = `msg-wrapper ${isMine ? 'mine' : 'theirs'}`;
+                div.innerHTML = `
+                    ${!isMine ? `<div class="msg-sender">${escapeHTML(msg.username)}</div>` : ''}
+                    <div class="msg-bubble">${contentHtml}</div>
+                    <div class="msg-time">${timeStr}</div>
                 `;
                 container.appendChild(div);
-            });
-
-            document.getElementById('scrollSentinel').style.display = filteredLogs.length > displayLimit ? 'block' : 'none';
-        }
-
-        document.getElementById('searchInput').addEventListener('input', (e) => { displayLimit = 10; renderLogs(e.target.value); });
-        const observer = new IntersectionObserver((entries) => { if (entries[0].isIntersecting) { displayLimit += loadChunk; renderLogs(document.getElementById('searchInput').value); } }, { rootMargin: "100px" });
-        observer.observe(document.getElementById('scrollSentinel'));
-
-        function exportDocument() {
-            if (logs.length === 0) return alert("No logs to export.");
-            let docContent = `# Polished Log Document\nUser: ${currentUser.username}\nGenerated on: ${new Date().toLocaleString()}\n\n---\n\n`;
-            [...logs].sort((a, b) => a.timestamp - b.timestamp).forEach(l => { docContent += `### ${l.date} - ${l.time}\n\n\`\`\`text\n${l.text}\n\`\`\`\n\n---\n\n`; });
-            const blob = new Blob([docContent], { type: 'text/markdown' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a'); a.href = url; a.download = `${currentUser.username}_Logs_${Date.now()}.md`; a.click(); URL.revokeObjectURL(url);
-        }
-
-        // --- OCR Logic ---
-        let currentOcrFile = null;
-        function previewOcrImage(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            currentOcrFile = file;
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const img = document.getElementById('ocrImagePreview');
-                img.src = e.target.result; img.style.display = 'block';
-                document.getElementById('ocrPlaceholder').style.display = 'none';
-                document.getElementById('convertBtn').style.display = 'block';
-                document.getElementById('ocrResult').value = '';
             }
-            reader.readAsDataURL(file);
-        }
 
-        async function performOcr() {
-            if (!currentOcrFile) return;
-            const loadingText = document.getElementById('ocrLoading');
-            const convertBtn = document.getElementById('convertBtn');
-            loadingText.style.display = 'block'; convertBtn.disabled = true; convertBtn.innerText = 'Converting...';
-            try {
-                const result = await Tesseract.recognize(currentOcrFile, 'eng');
-                document.getElementById('ocrResult').value = result.data.text;
-            } catch (error) { alert("Error extracting text."); } 
-            finally { loadingText.style.display = 'none'; convertBtn.disabled = false; convertBtn.innerText = 'Convert to Text'; }
-        }
+            function scrollToBottom() {
+                const container = document.getElementById('chatMessages');
+                container.scrollTop = container.scrollHeight;
+            }
 
-        function copyOcrText() {
-            const text = document.getElementById('ocrResult').value;
-            if (!text) return alert("No text to copy!");
-            navigator.clipboard.writeText(text).then(() => alert("Copied to clipboard!"));
-        }
+            // --- Favicon Badge ---
+            function updateFaviconBadge(count) {
+                const canvas = document.createElement('canvas');
+                canvas.width = 32;
+                canvas.height = 32;
+                const ctx = canvas.getContext('2d');
 
-        function addOcrToLog() {
-            const text = document.getElementById('ocrResult').value;
-            if (!text.trim()) return alert("No text to add!");
-            switchTab('logger');
-            const logInput = document.getElementById('logInput');
-            logInput.value = text; logInput.focus();
-        }
+                const img = new Image();
+                img.src = 'logoV3.png';
+                img.onload = function () {
+                    // Draw the original favicon
+                    ctx.drawImage(img, 0, 0, 32, 32);
 
-        // ==========================================
-        // CHAT & SOCKET.IO LOGIC
-        // ==========================================
-        function initSocket() {
-            socket = io();
-            socket.emit('register', currentUser.id);
+                    if (count > 0) {
+                        // Red dot with number
+                        const badgeX = 22, badgeY = 0, radius = 9;
+                        ctx.beginPath();
+                        ctx.arc(badgeX + radius, badgeY + radius, radius, 0, 2 * Math.PI);
+                        ctx.fillStyle = '#dc3545';
+                        ctx.fill();
 
-            socket.on('receive_message', (msg) => {
-                if (msg.conversation_id === activeConversationId) {
-                    appendMessageToUI(msg);
-                    scrollToBottom();
-                    // Mark as read immediately since we are looking at it
-                    fetch(`/api/conversations/${activeConversationId}/read`, { method: 'POST', headers: getHeaders() });
+                        ctx.fillStyle = '#fff';
+                        ctx.font = 'bold 11px Arial';
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        ctx.fillText(count > 99 ? '99+' : count, badgeX + radius, badgeY + radius + 1);
+                    }
+
+                    // Swap the favicon
+                    let link = document.querySelector("link[rel~='icon']");
+                    if (!link) {
+                        link = document.createElement('link');
+                        link.rel = 'icon';
+                        document.head.appendChild(link);
+                    }
+                    link.href = canvas.toDataURL('image/png');
+                };
+            }
+
+            const HOLIDAYS={
+            "2026-01-14":{name:"Makar Sankranti",saka:"24 Paush, 1947",type:"pub"},
+            "2026-01-26":{name:"Republic Day",saka:"06 Magh, 1947",type:"pub"},
+            "2026-03-04":{name:"Holi 2nd Day – Dhuleti",saka:"13 Phalgun, 1947",type:"pub"},
+            "2026-03-19":{name:"Chetichand",saka:"28 Phalgun, 1947",type:"pub"},
+            "2026-03-21":{name:"Ramjan-Eid (Eid-Ul-Fitra) – 1st Shawaal",saka:"30 Phalgun, 1947",type:"pub"},
+            "2026-03-26":{name:"Shree Ram Navmi",saka:"05 Chaitra, 1948",type:"pub"},
+            "2026-03-31":{name:"Mahavir Janma Kalyanak",saka:"10 Chaitra, 1948",type:"pub"},
+            "2026-04-03":{name:"Good Friday",saka:"13 Chaitra, 1948",type:"pub"},
+            "2026-04-14":{name:"Dr. Baba Saheb Ambedkar's Birthday",saka:"24 Chaitra, 1948",type:"pub"},
+            "2026-05-27":{name:"Eid-Ul-Adha (Bakri-Eid)",saka:"06 Jyestha, 1948",type:"pub"},
+            "2026-06-26":{name:"Muharram (Ashoora)",saka:"05 Ashadh, 1948",type:"pub"},
+            "2026-08-15":{name:"Independence Day",saka:"24 Shravan, 1948",type:"pub"},
+            "2026-08-26":{name:"Eid-e-Meeladunnabi (Prophet Mohammad's Birthday)",saka:"04 Bhadrapad, 1948",type:"pub"},
+            "2026-08-28":{name:"Raksha Bandhan",saka:"06 Bhadrapad, 1948",type:"pub"},
+            "2026-09-04":{name:"Janmashtami (Shravan Vad-8)",saka:"13 Bhadrapad, 1948",type:"pub"},
+            "2026-09-15":{name:"Samvatsari (Chaturthi Paksha)",saka:"24 Bhadrapad, 1948",type:"pub"},
+            "2026-10-02":{name:"Mahatma Gandhi's Birthday",saka:"10 Ashwin, 1948",type:"pub"},
+            "2026-10-20":{name:"Dusshera (Vijaya Dashmi)",saka:"28 Ashwin, 1948",type:"pub"},
+            "2026-10-31":{name:"Sardar Vallabhbhai Patel's Birthday",saka:"09 Kartik, 1948",type:"pub"},
+            "2026-11-10":{name:"Vikram Samvant New Year Day",saka:"19 Kartik, 1948",type:"pub"},
+            "2026-11-11":{name:"Bhai Bij",saka:"20 Kartik, 1948",type:"pub"},
+            "2026-11-24":{name:"Guru Nanak's Birthday",saka:"03 Margshirsh, 1948",type:"pub"},
+            "2026-12-25":{name:"Christmas",saka:"04 Paush, 1948",type:"pub"},
+            };
+
+            function getSatHols(year,month){
+            const result={},sats=[];
+            let d=new Date(year,month,1);
+            while(d.getMonth()===month){if(d.getDay()===6)sats.push(new Date(d));d.setDate(d.getDate()+1);}
+            [sats[1],sats[3]].forEach(s=>{
+                if(!s)return;
+                const key=`${s.getFullYear()}-${String(s.getMonth()+1).padStart(2,'0')}-${String(s.getDate()).padStart(2,'0')}`;
+                if(!HOLIDAYS[key])result[key]={name:"2nd/4th Saturday Holiday",saka:"",type:"sat"};
+            });
+            return result;
+            }
+
+            function dateKey(y,m,d){return `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;}
+            function keyToTs(key){const[y,m,d]=key.split('-').map(Number);return new Date(y,m-1,d).getTime();}
+
+            const MONTHS=["January","February","March","April","May","June","July","August","September","October","November","December"];
+            const today=new Date();
+            let curYear=2026,curMonth=today.getMonth();
+
+            // Selection state
+            let selectedKeys=new Set();
+            let ctrlMode=false;
+
+            // Drag state
+            let isDragging=false;
+            let dragStartKey=null;
+            let dragCurrentKey=null;
+            let dragMoved=false; // true once cursor enters a DIFFERENT cell after mousedown
+
+            function getRangeKeys(keyA,keyB){
+            const tsA=keyToTs(keyA),tsB=keyToTs(keyB);
+            const start=Math.min(tsA,tsB),end=Math.max(tsA,tsB);
+            const keys=[];
+            let cur=new Date(start);
+            while(cur.getTime()<=end){
+                keys.push(`${cur.getFullYear()}-${String(cur.getMonth()+1).padStart(2,'0')}-${String(cur.getDate()).padStart(2,'0')}`);
+                cur.setDate(cur.getDate()+1);
+            }
+            return keys;
+            }
+
+            function updateCountUI(){
+                const n = selectedKeys.size;
+                const global = document.getElementById('globalDayCount');
+                const globalNum = document.getElementById('globalDayCountNum');
+
+                globalNum.textContent = n;
+                if(n > 0){
+                    global.style.display = 'block';
+                    requestAnimationFrame(() => {
+                        global.style.opacity = '1';
+                        global.style.transform = 'translateY(0)';
+                    });
+                } else {
+                    global.style.opacity = '0';
+                    global.style.transform = 'translateY(-6px)';
+                    setTimeout(() => { global.style.display = 'none'; }, 180);
                 }
+            }
+
+            // Repaints just selection classes without rebuilding DOM
+            function applySelectionClasses(){
+            const previewRange=(!ctrlMode&&isDragging&&dragStartKey&&dragCurrentKey&&dragMoved)
+                ? new Set(getRangeKeys(dragStartKey,dragCurrentKey)) : null;
+
+            document.querySelectorAll('.cal-cell[data-key]').forEach(cell=>{
+                const key=cell.dataset.key;
+                cell.classList.remove('selected','drag-hover');
+                if(selectedKeys.has(key)) cell.classList.add('selected');
+                else if(previewRange&&previewRange.has(key)) cell.classList.add('drag-hover');
             });
+            }
 
-            socket.on('new_message_notification', () => loadConversations());
+            function render(){
+            document.getElementById('calMonthLabel').textContent=MONTHS[curMonth];
+            const satHols=getSatHols(curYear,curMonth);
+            const allHols=Object.assign({},HOLIDAYS,satHols);
+            const grid=document.getElementById('calGrid');
+            grid.innerHTML='';
 
-            socket.on('chat_deleted_notification', (convId) => {
-                if (activeConversationId === convId) {
-                    clearActiveChat();
-                    alert("This chat was deleted.");
+            const firstDay=new Date(curYear,curMonth,1).getDay();
+            const daysInMonth=new Date(curYear,curMonth+1,0).getDate();
+
+            for(let i=0;i<firstDay;i++){
+                const e=document.createElement('div');e.className='cal-cell empty';grid.appendChild(e);
+            }
+
+            for(let d=1;d<=daysInMonth;d++){
+                const key=dateKey(curYear,curMonth,d);
+                const date=new Date(curYear,curMonth,d);
+                const isSun=date.getDay()===0;
+                const hol=allHols[key];
+                const isPub=hol&&hol.type==='pub';
+                const isSat=hol&&hol.type==='sat';
+                const isToday=(today.getFullYear()===curYear&&today.getMonth()===curMonth&&today.getDate()===d);
+
+                const cell=document.createElement('div');
+                let cls='cal-cell';
+                if(isPub) cls+=' is-pub-holiday';
+                else if(isSat) cls+=' is-sat-holiday';
+                else if(isSun) cls+=' is-sunday';
+                else cls+=' normal';
+                if(isToday) cls+=' is-today';
+                if(selectedKeys.has(key)) cls+=' selected';
+                cell.className=cls;
+                cell.dataset.key=key;
+
+                let inner=`<div class="day-num">${d}</div>`;
+                if(hol){inner+=`<div class="hol-tag">${hol.name}</div><div class="hol-dot"></div>`;}
+                cell.innerHTML=inner;
+
+                if(hol){
+                cell.addEventListener('mouseenter',e=>showTip(e,hol,date));
+                cell.addEventListener('mousemove',e=>moveTip(e));
+                cell.addEventListener('mouseleave',hideTip);
                 }
-                loadConversations();
-            });
-        }
 
-        async function loadConversations() {
-            const res = await fetch('/api/conversations', { headers: getHeaders() });
-            const convos = await res.json();
-            const list = document.getElementById('chatList');
-            list.innerHTML = '';
-            
-            let totalUnread = 0;
-
-            convos.forEach(c => {
-                totalUnread += c.unread_count;
-
-                const div = document.createElement('div');
-                div.className = `chat-item ${c.id === activeConversationId ? 'active' : ''}`;
-                
-                const title = c.is_group ? `👥 ${c.name}` : `👤 ${c.other_user}`;
-                const badgeHtml = c.unread_count > 0 && c.id !== activeConversationId ? `<span class="badge">${c.unread_count}</span>` : '';
-                
-                div.innerHTML = `<span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${title}</span> ${badgeHtml}`;
-                div.onclick = () => selectConversation(c.id, title, c.is_group, c.admin_id, div);
-                list.appendChild(div);
-            });
-
-            // Right after the forEach loop, replace the existing globalBadge block with:
-            const globalBadge = document.getElementById('globalChatBadge');
-            if (totalUnread > 0) {
-                globalBadge.innerText = totalUnread;
-                globalBadge.style.display = 'inline-block';
-                updateFaviconBadge(totalUnread);
-            } else {
-                globalBadge.style.display = 'none';
-                updateFaviconBadge(0); // Clears the badge
-            }
-        }
-
-        async function selectConversation(id, title, isGroup, adminId, clickedEl) {
-            activeConversationId = id;
-            
-            // Mark as read in the database
-            await fetch(`/api/conversations/${id}/read`, { method: 'POST', headers: getHeaders() });
-            loadConversations(); // Refresh sidebar to clear the badge
-            
-            const header = document.getElementById('activeChatHeader');
-            header.style.display = 'flex';
-            header.style.justifyContent = 'space-between';
-            header.style.alignItems = 'center';
-            
-            let buttonsHtml = `<div style="display:flex; gap:5px;">`;
-            if (isGroup) {
-                buttonsHtml += `<button class="btn-secondary btn-small" onclick="leaveChat()">Leave</button>`;
-                if (currentUser.id === adminId) {
-                    buttonsHtml += `<button class="btn-danger btn-small" onclick="deleteChat()">Delete Group</button>`;
+                cell.addEventListener('mousedown',e=>{
+                if(e.button!==0)return;
+                e.preventDefault();
+                hideTip();
+                if(ctrlMode){
+                    // Toggle just this date, keep everything else
+                    if(selectedKeys.has(key)) selectedKeys.delete(key);
+                    else selectedKeys.add(key);
+                    updateCountUI(); applySelectionClasses();
+                } else {
+                    // Start a potential drag from this cell
+                    isDragging=true;
+                    dragStartKey=key;
+                    dragCurrentKey=key;
+                    dragMoved=false;
                 }
-            } else {
-                buttonsHtml += `<button class="btn-danger btn-small" onclick="deleteChat()">Delete Chat</button>`;
+                });
+
+                cell.addEventListener('mouseenter',()=>{
+                if(!ctrlMode&&isDragging&&key!==dragStartKey){
+                    dragMoved=true;
+                    dragCurrentKey=key;
+                    applySelectionClasses();
+                }
+                });
+
+                grid.appendChild(cell);
             }
-            buttonsHtml += `</div>`;
-            
-            header.innerHTML = `<span>${title}</span> ${buttonsHtml}`;
-            document.getElementById('chatInputArea').style.display = 'flex';
-            
-            document.querySelectorAll('.chat-item').forEach(el => el.classList.remove('active'));
-            if (clickedEl) clickedEl.classList.add('active');
 
-            socket.emit('join_conversation', id);
-
-            const res = await fetch(`/api/messages/${id}`);
-            const messages = await res.json();
-            
-            const container = document.getElementById('chatMessages');
-            container.innerHTML = '';
-            messages.forEach(appendMessageToUI);
-            scrollToBottom();
-        }
-
-        async function leaveChat() {
-            if (!confirm("Are you sure you want to leave this group?")) return;
-            await fetch(`/api/conversations/${activeConversationId}/leave`, { method: 'POST', headers: getHeaders() });
-            clearActiveChat();
-            loadConversations();
-        }
-
-        async function deleteChat() {
-            if (!confirm("Are you sure you want to permanently delete this chat for EVERYONE?")) return;
-            
-            const res = await fetch(`/api/conversations/${activeConversationId}`, { method: 'DELETE', headers: getHeaders() });
-            
-            if (!res.ok) {
-                const data = await res.json();
-                return alert(data.error || "Failed to delete chat.");
+            document.querySelectorAll('.month-chip').forEach((c,i)=>c.classList.toggle('active',i===curMonth));
             }
-            
-            socket.emit('chat_deleted', activeConversationId); 
-            clearActiveChat();
-            loadConversations();
-        }
 
-        function clearActiveChat() {
-            activeConversationId = null;
-            const header = document.getElementById('activeChatHeader');
-            header.innerHTML = 'Select a chat to start messaging';
-            header.style.display = 'block';
-            document.getElementById('chatMessages').innerHTML = '';
-            document.getElementById('chatInputArea').style.display = 'none';
-        }
+            // Commit on mouseup
+            document.addEventListener('mouseup', e => {
+                if(!isDragging) return;
 
-        async function openNewChatModal() {
-            const res = await fetch('/api/users', { headers: getHeaders() });
-            const users = await res.json();
-            const list = document.getElementById('userCheckboxList');
-            list.innerHTML = '';
-            
-            users.forEach(u => {
-                if(u.id === currentUser.id) return;
-                list.innerHTML += `<label><input type="checkbox" value="${u.id}"> ${u.username}</label>`;
+                if(ctrlMode){
+                    isDragging=false; return;
+                }
+
+                if(dragMoved){
+                    // Range drag — replace selection with this range
+                    selectedKeys = new Set(getRangeKeys(dragStartKey, dragCurrentKey));
+                } else {
+                    // Plain click — toggle if already selected, otherwise replace with just this day
+                    if(selectedKeys.has(dragStartKey) && selectedKeys.size === 1){
+                    // Only day selected is this one — deselect it
+                    selectedKeys.clear();
+                    } else if(selectedKeys.has(dragStartKey)){
+                    // Was part of a multi-selection — collapse to just this day
+                    selectedKeys = new Set([dragStartKey]);
+                    } else {
+                    // Not selected — select only this day
+                    selectedKeys = new Set([dragStartKey]);
+                    }
+                }
+
+                isDragging=false; dragStartKey=null; dragCurrentKey=null; dragMoved=false;
+                updateCountUI(); applySelectionClasses();
+                });
+
+            // Ctrl key
+            document.addEventListener('keydown',e=>{if(e.key==='Control'){ctrlMode=true;}});
+            document.addEventListener('keyup',e=>{if(e.key==='Control'){ctrlMode=false;}});
+
+            // Click outside clears
+            document.addEventListener('mousedown',e=>{
+            if(!document.getElementById('calWrap').contains(e.target)){
+                selectedKeys.clear(); updateCountUI(); applySelectionClasses();
+            }
             });
-            document.getElementById('newChatModal').classList.add('active');
-        }
 
-        function closeNewChatModal() {
-            document.getElementById('newChatModal').classList.remove('active');
-            document.getElementById('groupNameInput').value = '';
-        }
+            function prevMonth(){curMonth=curMonth===0?11:curMonth-1;render();}
+            function nextMonth(){curMonth=curMonth===11?0:curMonth+1;render();}
 
-        async function createNewChat() {
-            const checkboxes = document.querySelectorAll('#userCheckboxList input:checked');
-            const selectedIds = Array.from(checkboxes).map(cb => parseInt(cb.value));
-            if(selectedIds.length === 0) return alert("Select at least one user.");
-            
-            const isGroup = selectedIds.length > 1;
-            const name = document.getElementById('groupNameInput').value;
-            if(isGroup && !name.trim()) return alert("Please provide a group name.");
-
-            selectedIds.push(currentUser.id); // Add myself
-
-            const res = await fetch('/api/conversations', {
-                method: 'POST', headers: getHeaders(),
-                body: JSON.stringify({ is_group: isGroup, name: name, participant_ids: selectedIds })
-            });
-            
-            const data = await res.json();
-            
-            if (data.exists) {
-                alert("A chat with this user already exists.");
+            function showTip(e,hol,date){
+            const tip=document.getElementById('tooltip');
+            const dayName=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][date.getDay()];
+            const fmt=`${dayName}, ${date.toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'})}`;
+            let html=`<div class="tooltip-title">${hol.name}</div><div class="tooltip-sub">${fmt}</div>`;
+            if(hol.saka)html+=`<div class="tooltip-saka">Saka: ${hol.saka}</div>`;
+            tip.innerHTML=html; tip.style.display='block'; moveTip(e);
             }
-            
-            closeNewChatModal();
-            loadConversations();
-        }
+            function moveTip(e){
+            const tip=document.getElementById('tooltip');
+            let x=e.clientX+16,y=e.clientY+16;
+            if(x+220>window.innerWidth)x=e.clientX-220;
+            if(y+110>window.innerHeight)y=e.clientY-110;
+            tip.style.left=x+'px';tip.style.top=y+'px';
+            }
+            function hideTip(){document.getElementById('tooltip').style.display='none';}
 
-        function handleChatAttachment(event) {
-            const file = event.target.files[0];
-            if(!file) return;
-            chatFileToUpload = file;
-            document.getElementById('chatAttachmentName').innerText = file.name;
-            document.getElementById('chatAttachmentPreview').style.display = 'flex';
-        }
+            const strip=document.getElementById('monthStrip');
+            MONTHS.forEach((m,i)=>{
+            const c=document.createElement('div');
+            c.className='month-chip'+(i===curMonth?' active':'');
+            c.textContent=m;
+            c.onclick=()=>{curMonth=i;render();};
+            strip.appendChild(c);
+            });
 
-        function clearChatAttachment() {
-            chatFileToUpload = null;
-            document.getElementById('chatFileInput').value = '';
-            document.getElementById('chatAttachmentPreview').style.display = 'none';
-        }
+            render();
 
-        async function sendChatMessage() {
-            const textInput = document.getElementById('chatTextInput');
-            const text = textInput.value.trim();
-            const sendBtn = document.getElementById('chatSendBtn');
-            
-            if (!text && !chatFileToUpload) return;
 
-            sendBtn.disabled = true;
-            sendBtn.innerText = 'Sending...';
+            // ==========================================
+            // FILEVAULT LOGIC
+            // ==========================================
+            let fvUser = '';
+            let fvAllFiles = [];
 
-            let fileUrl = null;
-            let fileName = null;
+            function fvEsc(s) {
+                return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+            }
 
-            // 1. Upload file if exists (Handles GBs via Multer stream)
-            if (chatFileToUpload) {
-                const formData = new FormData();
-                formData.append('file', chatFileToUpload);
-                
-                try {
-                    const res = await fetch('/api/upload', { method: 'POST', body: formData });
-                    const data = await res.json();
-                    fileUrl = data.file_url;
-                    fileName = data.file_name;
-                } catch (e) {
-                    alert("File upload failed.");
-                    sendBtn.disabled = false;
-                    sendBtn.innerText = 'Send';
+            function fvFormatTime(ts) {
+                const d = new Date(ts);
+                const today = new Date();
+                if (d.toDateString() === today.toDateString())
+                    return 'Today ' + d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                return d.toLocaleDateString([], { month: 'short', day: 'numeric' }) + ' ' + d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            }
+
+            function showToast(msg, type = 'error') {
+                const t = document.getElementById('toast');
+                t.textContent = msg;
+                t.className = `toast ${type} show`;
+                clearTimeout(t._t);
+                t._t = setTimeout(() => { t.className = 'toast'; }, 3400);
+            }
+
+            function fvStartSession() {
+                const input = document.getElementById('fvNameInput');
+                const name = input.value.trim();
+                if (!name) { input.style.borderColor = 'var(--danger)'; setTimeout(() => input.style.borderColor = '', 900); return; }
+                fvUser = name;
+                document.getElementById('fvDisplayUser').textContent = name;
+                document.getElementById('fvNameGate').style.display = 'none';
+                document.getElementById('fvMain').style.display = 'block';
+                fvFetchFiles();
+                document.getElementById('fvFileInput').addEventListener('keydown', e => { if (e.key === 'Enter') fvAddFile(); });
+            }
+
+            // Files
+            async function fvFetchFiles() {
+                try { const res = await fetch('/api/fv/files'); fvAllFiles = await res.json(); fvRenderFiles(); } catch {}
+            }
+
+            function fvGetFilters() {
+                const nameQ = document.getElementById('fvFilterName').value.trim().toLowerCase();
+                const userQ = document.getElementById('fvFilterUser').value.trim().toLowerCase();
+                const fromVal = document.getElementById('fvFilterFrom').value;
+                const toVal = document.getElementById('fvFilterTo').value;
+                return { nameQ, userQ, fromTs: fromVal ? new Date(fromVal).getTime() : null, toTs: toVal ? new Date(toVal).getTime() : null };
+            }
+
+            function fvHasFilters() { const f = fvGetFilters(); return !!(f.nameQ || f.userQ || f.fromTs || f.toTs); }
+
+            function fvClearFilters() {
+                document.getElementById('fvFilterName').value = '';
+                document.getElementById('fvFilterUser').value = '';
+                document.getElementById('fvFilterFrom').value = '';
+                document.getElementById('fvFilterTo').value = '';
+                fvRenderFiles();
+            }
+
+            function fvRenderFiles() {
+                const { nameQ, userQ, fromTs, toTs } = fvGetFilters();
+                const filtered = fvAllFiles.filter(f => {
+                    if (nameQ && !f.name.toLowerCase().includes(nameQ)) return false;
+                    if (userQ && !f.owner.toLowerCase().includes(userQ)) return false;
+                    if (fromTs != null && f.ts < fromTs) return false;
+                    if (toTs != null && f.ts > toTs) return false;
+                    return true;
+                });
+                const mine = fvAllFiles.filter(f => f.owner === fvUser).length;
+                document.getElementById('fvStatTotal').textContent = fvAllFiles.length;
+                document.getElementById('fvStatMine').textContent = mine;
+
+                const countEl = document.getElementById('fvFilterCount');
+                const clearBtn = document.getElementById('fvFilterClear');
+                if (fvHasFilters()) {
+                    countEl.textContent = `Showing ${filtered.length} of ${fvAllFiles.length}`;
+                    clearBtn.style.display = 'inline-block';
+                } else {
+                    countEl.textContent = '';
+                    clearBtn.style.display = 'none';
+                }
+
+                const list = document.getElementById('fvFileList');
+                if (!filtered.length) {
+                    list.innerHTML = `<div class="fv-empty">${!fvAllFiles.length ? 'No files yet.<br>Be the first to add one!' : 'No files match your filters.'}</div>`;
                     return;
                 }
+                list.innerHTML = filtered.map(f => `
+                    <div class="fv-file-item" data-filename="${fvEsc(f.name)}">
+                        <div class="fv-file-icon">
+                            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                        </div>
+                        <div class="fv-file-details">
+                            <div class="fv-file-name">${fvEsc(f.name)}</div>
+                            <div class="fv-file-owner">${fvEsc(f.owner)}</div>
+                        </div>
+                        <div class="fv-file-time">${fvFormatTime(f.ts)}</div>
+                        ${f.owner === fvUser ? `
+                            <button class="fv-delete-btn" data-fv-delete="${fvEsc(f.name)}" title="Delete">
+                                🗑&#xFE0E;
+                            </button>` : '<div style="width:26px;flex-shrink:0;"></div>'}
+                    </div>
+                `).join('');
             }
 
-            // 2. Send message via Socket
-            const msgData = {
-                conversation_id: activeConversationId,
-                sender_id: currentUser.id,
-                text: text,
-                file_url: fileUrl,
-                file_name: fileName,
-                timestamp: Date.now()
-            };
-
-            socket.emit('send_message', msgData);
-
-            // Cleanup UI
-            textInput.value = '';
-            clearChatAttachment();
-            sendBtn.disabled = false;
-            sendBtn.innerText = 'Send';
-        }
-
-        function appendMessageToUI(msg) {
-            const container = document.getElementById('chatMessages');
-            const isMine = msg.sender_id === currentUser.id;
-            const timeStr = new Date(msg.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-            
-            let contentHtml = '';
-            if (msg.text) contentHtml += `<div>${escapeHTML(msg.text)}</div>`;
-            
-            if (msg.file_url) {
-                const ext = msg.file_name.split('.').pop().toLowerCase();
-                if (['png', 'jpg', 'jpeg', 'gif', 'webp'].includes(ext)) {
-                    contentHtml += `<img src="${msg.file_url}" class="chat-img-attachment" onclick="window.open('${msg.file_url}', '_blank')">`;
-                } else {
-                    contentHtml += `
-                        <a href="${msg.file_url}" download="${msg.file_name}" class="chat-file-attachment">
-                            📄 ${escapeHTML(msg.file_name)} ⬇️
-                        </a>
-                    `;
-                }
-            }
-
-            const div = document.createElement('div');
-            div.className = `msg-wrapper ${isMine ? 'mine' : 'theirs'}`;
-            div.innerHTML = `
-                ${!isMine ? `<div class="msg-sender">${escapeHTML(msg.username)}</div>` : ''}
-                <div class="msg-bubble">${contentHtml}</div>
-                <div class="msg-time">${timeStr}</div>
-            `;
-            container.appendChild(div);
-        }
-
-        function scrollToBottom() {
-            const container = document.getElementById('chatMessages');
-            container.scrollTop = container.scrollHeight;
-        }
-
-        // --- Favicon Badge ---
-        function updateFaviconBadge(count) {
-            const canvas = document.createElement('canvas');
-            canvas.width = 32;
-            canvas.height = 32;
-            const ctx = canvas.getContext('2d');
-
-            const img = new Image();
-            img.src = 'logoV3.png';
-            img.onload = function () {
-                // Draw the original favicon
-                ctx.drawImage(img, 0, 0, 32, 32);
-
-                if (count > 0) {
-                    // Red dot with number
-                    const badgeX = 22, badgeY = 0, radius = 9;
-                    ctx.beginPath();
-                    ctx.arc(badgeX + radius, badgeY + radius, radius, 0, 2 * Math.PI);
-                    ctx.fillStyle = '#dc3545';
-                    ctx.fill();
-
-                    ctx.fillStyle = '#fff';
-                    ctx.font = 'bold 11px Arial';
-                    ctx.textAlign = 'center';
-                    ctx.textBaseline = 'middle';
-                    ctx.fillText(count > 99 ? '99+' : count, badgeX + radius, badgeY + radius + 1);
-                }
-
-                // Swap the favicon
-                let link = document.querySelector("link[rel~='icon']");
-                if (!link) {
-                    link = document.createElement('link');
-                    link.rel = 'icon';
-                    document.head.appendChild(link);
-                }
-                link.href = canvas.toDataURL('image/png');
-            };
-        }
-
-        const HOLIDAYS={
-        "2026-01-14":{name:"Makar Sankranti",saka:"24 Paush, 1947",type:"pub"},
-        "2026-01-26":{name:"Republic Day",saka:"06 Magh, 1947",type:"pub"},
-        "2026-03-04":{name:"Holi 2nd Day – Dhuleti",saka:"13 Phalgun, 1947",type:"pub"},
-        "2026-03-19":{name:"Chetichand",saka:"28 Phalgun, 1947",type:"pub"},
-        "2026-03-21":{name:"Ramjan-Eid (Eid-Ul-Fitra) – 1st Shawaal",saka:"30 Phalgun, 1947",type:"pub"},
-        "2026-03-26":{name:"Shree Ram Navmi",saka:"05 Chaitra, 1948",type:"pub"},
-        "2026-03-31":{name:"Mahavir Janma Kalyanak",saka:"10 Chaitra, 1948",type:"pub"},
-        "2026-04-03":{name:"Good Friday",saka:"13 Chaitra, 1948",type:"pub"},
-        "2026-04-14":{name:"Dr. Baba Saheb Ambedkar's Birthday",saka:"24 Chaitra, 1948",type:"pub"},
-        "2026-05-27":{name:"Eid-Ul-Adha (Bakri-Eid)",saka:"06 Jyestha, 1948",type:"pub"},
-        "2026-06-26":{name:"Muharram (Ashoora)",saka:"05 Ashadh, 1948",type:"pub"},
-        "2026-08-15":{name:"Independence Day",saka:"24 Shravan, 1948",type:"pub"},
-        "2026-08-26":{name:"Eid-e-Meeladunnabi (Prophet Mohammad's Birthday)",saka:"04 Bhadrapad, 1948",type:"pub"},
-        "2026-08-28":{name:"Raksha Bandhan",saka:"06 Bhadrapad, 1948",type:"pub"},
-        "2026-09-04":{name:"Janmashtami (Shravan Vad-8)",saka:"13 Bhadrapad, 1948",type:"pub"},
-        "2026-09-15":{name:"Samvatsari (Chaturthi Paksha)",saka:"24 Bhadrapad, 1948",type:"pub"},
-        "2026-10-02":{name:"Mahatma Gandhi's Birthday",saka:"10 Ashwin, 1948",type:"pub"},
-        "2026-10-20":{name:"Dusshera (Vijaya Dashmi)",saka:"28 Ashwin, 1948",type:"pub"},
-        "2026-10-31":{name:"Sardar Vallabhbhai Patel's Birthday",saka:"09 Kartik, 1948",type:"pub"},
-        "2026-11-10":{name:"Vikram Samvant New Year Day",saka:"19 Kartik, 1948",type:"pub"},
-        "2026-11-11":{name:"Bhai Bij",saka:"20 Kartik, 1948",type:"pub"},
-        "2026-11-24":{name:"Guru Nanak's Birthday",saka:"03 Margshirsh, 1948",type:"pub"},
-        "2026-12-25":{name:"Christmas",saka:"04 Paush, 1948",type:"pub"},
-        };
-
-        function getSatHols(year,month){
-        const result={},sats=[];
-        let d=new Date(year,month,1);
-        while(d.getMonth()===month){if(d.getDay()===6)sats.push(new Date(d));d.setDate(d.getDate()+1);}
-        [sats[1],sats[3]].forEach(s=>{
-            if(!s)return;
-            const key=`${s.getFullYear()}-${String(s.getMonth()+1).padStart(2,'0')}-${String(s.getDate()).padStart(2,'0')}`;
-            if(!HOLIDAYS[key])result[key]={name:"2nd/4th Saturday Holiday",saka:"",type:"sat"};
-        });
-        return result;
-        }
-
-        function dateKey(y,m,d){return `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;}
-        function keyToTs(key){const[y,m,d]=key.split('-').map(Number);return new Date(y,m-1,d).getTime();}
-
-        const MONTHS=["January","February","March","April","May","June","July","August","September","October","November","December"];
-        const today=new Date();
-        let curYear=2026,curMonth=today.getMonth();
-
-        // Selection state
-        let selectedKeys=new Set();
-        let ctrlMode=false;
-
-        // Drag state
-        let isDragging=false;
-        let dragStartKey=null;
-        let dragCurrentKey=null;
-        let dragMoved=false; // true once cursor enters a DIFFERENT cell after mousedown
-
-        function getRangeKeys(keyA,keyB){
-        const tsA=keyToTs(keyA),tsB=keyToTs(keyB);
-        const start=Math.min(tsA,tsB),end=Math.max(tsA,tsB);
-        const keys=[];
-        let cur=new Date(start);
-        while(cur.getTime()<=end){
-            keys.push(`${cur.getFullYear()}-${String(cur.getMonth()+1).padStart(2,'0')}-${String(cur.getDate()).padStart(2,'0')}`);
-            cur.setDate(cur.getDate()+1);
-        }
-        return keys;
-        }
-
-        function updateCountUI(){
-            const n = selectedKeys.size;
-            const global = document.getElementById('globalDayCount');
-            const globalNum = document.getElementById('globalDayCountNum');
-
-            globalNum.textContent = n;
-            if(n > 0){
-                global.style.display = 'block';
-                requestAnimationFrame(() => {
-                    global.style.opacity = '1';
-                    global.style.transform = 'translateY(0)';
-                });
-            } else {
-                global.style.opacity = '0';
-                global.style.transform = 'translateY(-6px)';
-                setTimeout(() => { global.style.display = 'none'; }, 180);
-            }
-        }
-
-        // Repaints just selection classes without rebuilding DOM
-        function applySelectionClasses(){
-        const previewRange=(!ctrlMode&&isDragging&&dragStartKey&&dragCurrentKey&&dragMoved)
-            ? new Set(getRangeKeys(dragStartKey,dragCurrentKey)) : null;
-
-        document.querySelectorAll('.cal-cell[data-key]').forEach(cell=>{
-            const key=cell.dataset.key;
-            cell.classList.remove('selected','drag-hover');
-            if(selectedKeys.has(key)) cell.classList.add('selected');
-            else if(previewRange&&previewRange.has(key)) cell.classList.add('drag-hover');
-        });
-        }
-
-        function render(){
-        document.getElementById('calMonthLabel').textContent=MONTHS[curMonth];
-        const satHols=getSatHols(curYear,curMonth);
-        const allHols=Object.assign({},HOLIDAYS,satHols);
-        const grid=document.getElementById('calGrid');
-        grid.innerHTML='';
-
-        const firstDay=new Date(curYear,curMonth,1).getDay();
-        const daysInMonth=new Date(curYear,curMonth+1,0).getDate();
-
-        for(let i=0;i<firstDay;i++){
-            const e=document.createElement('div');e.className='cal-cell empty';grid.appendChild(e);
-        }
-
-        for(let d=1;d<=daysInMonth;d++){
-            const key=dateKey(curYear,curMonth,d);
-            const date=new Date(curYear,curMonth,d);
-            const isSun=date.getDay()===0;
-            const hol=allHols[key];
-            const isPub=hol&&hol.type==='pub';
-            const isSat=hol&&hol.type==='sat';
-            const isToday=(today.getFullYear()===curYear&&today.getMonth()===curMonth&&today.getDate()===d);
-
-            const cell=document.createElement('div');
-            let cls='cal-cell';
-            if(isPub) cls+=' is-pub-holiday';
-            else if(isSat) cls+=' is-sat-holiday';
-            else if(isSun) cls+=' is-sunday';
-            else cls+=' normal';
-            if(isToday) cls+=' is-today';
-            if(selectedKeys.has(key)) cls+=' selected';
-            cell.className=cls;
-            cell.dataset.key=key;
-
-            let inner=`<div class="day-num">${d}</div>`;
-            if(hol){inner+=`<div class="hol-tag">${hol.name}</div><div class="hol-dot"></div>`;}
-            cell.innerHTML=inner;
-
-            if(hol){
-            cell.addEventListener('mouseenter',e=>showTip(e,hol,date));
-            cell.addEventListener('mousemove',e=>moveTip(e));
-            cell.addEventListener('mouseleave',hideTip);
-            }
-
-            cell.addEventListener('mousedown',e=>{
-            if(e.button!==0)return;
-            e.preventDefault();
-            hideTip();
-            if(ctrlMode){
-                // Toggle just this date, keep everything else
-                if(selectedKeys.has(key)) selectedKeys.delete(key);
-                else selectedKeys.add(key);
-                updateCountUI(); applySelectionClasses();
-            } else {
-                // Start a potential drag from this cell
-                isDragging=true;
-                dragStartKey=key;
-                dragCurrentKey=key;
-                dragMoved=false;
-            }
+            document.addEventListener('click', async (e) => {
+                const btn = e.target.closest('.fv-delete-btn');
+                if (!btn) return;
+                const name = btn.dataset.fvDelete;
+                if (!name || !confirm(`Delete "${name}"?`)) return;
+                const item = btn.closest('.fv-file-item');
+                if (item) item.classList.add('deleting');
+                try {
+                    const res = await fetch('/api/fv/files', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, owner: fvUser }) });
+                    if (res.ok) { showToast(`"${name}" deleted.`, 'success'); fvFetchFiles(); }
+                    else { const d = await res.json(); showToast(d.message || 'Could not delete.', 'error'); if (item) item.classList.remove('deleting'); }
+                } catch { showToast('Cannot reach server.', 'error'); if (item) item.classList.remove('deleting'); }
             });
 
-            cell.addEventListener('mouseenter',()=>{
-            if(!ctrlMode&&isDragging&&key!==dragStartKey){
-                dragMoved=true;
-                dragCurrentKey=key;
-                applySelectionClasses();
-            }
-            });
-
-            grid.appendChild(cell);
-        }
-
-        document.querySelectorAll('.month-chip').forEach((c,i)=>c.classList.toggle('active',i===curMonth));
-        }
-
-        // Commit on mouseup
-        document.addEventListener('mouseup', e => {
-            if(!isDragging) return;
-
-            if(ctrlMode){
-                isDragging=false; return;
+            async function fvAddFile() {
+                const input = document.getElementById('fvFileInput');
+                const name = input.value.trim();
+                if (!name) { input.style.borderColor = 'var(--danger)'; setTimeout(() => input.style.borderColor = '', 900); return; }
+                try {
+                    const res = await fetch('/api/fv/files', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, owner: fvUser }) });
+                    if (res.status === 201) { input.value = ''; showToast(`"${name}" added!`, 'success'); fvFetchFiles(); }
+                    else if (res.status === 409) { const d = await res.json(); showToast(d.message, 'error'); input.value = ''; }
+                    else showToast('Something went wrong.', 'error');
+                } catch { showToast('Cannot reach server.', 'error'); }
             }
 
-            if(dragMoved){
-                // Range drag — replace selection with this range
-                selectedKeys = new Set(getRangeKeys(dragStartKey, dragCurrentKey));
-            } else {
-                // Plain click — toggle if already selected, otherwise replace with just this day
-                if(selectedKeys.has(dragStartKey) && selectedKeys.size === 1){
-                // Only day selected is this one — deselect it
-                selectedKeys.clear();
-                } else if(selectedKeys.has(dragStartKey)){
-                // Was part of a multi-selection — collapse to just this day
-                selectedKeys = new Set([dragStartKey]);
-                } else {
-                // Not selected — select only this day
-                selectedKeys = new Set([dragStartKey]);
-                }
-            }
-
-            isDragging=false; dragStartKey=null; dragCurrentKey=null; dragMoved=false;
-            updateCountUI(); applySelectionClasses();
-            });
-
-        // Ctrl key
-        document.addEventListener('keydown',e=>{if(e.key==='Control'){ctrlMode=true;}});
-        document.addEventListener('keyup',e=>{if(e.key==='Control'){ctrlMode=false;}});
-
-        // Click outside clears
-        document.addEventListener('mousedown',e=>{
-        if(!document.getElementById('calWrap').contains(e.target)){
-            selectedKeys.clear(); updateCountUI(); applySelectionClasses();
-        }
-        });
-
-        function prevMonth(){curMonth=curMonth===0?11:curMonth-1;render();}
-        function nextMonth(){curMonth=curMonth===11?0:curMonth+1;render();}
-
-        function showTip(e,hol,date){
-        const tip=document.getElementById('tooltip');
-        const dayName=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][date.getDay()];
-        const fmt=`${dayName}, ${date.toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'})}`;
-        let html=`<div class="tooltip-title">${hol.name}</div><div class="tooltip-sub">${fmt}</div>`;
-        if(hol.saka)html+=`<div class="tooltip-saka">Saka: ${hol.saka}</div>`;
-        tip.innerHTML=html; tip.style.display='block'; moveTip(e);
-        }
-        function moveTip(e){
-        const tip=document.getElementById('tooltip');
-        let x=e.clientX+16,y=e.clientY+16;
-        if(x+220>window.innerWidth)x=e.clientX-220;
-        if(y+110>window.innerHeight)y=e.clientY-110;
-        tip.style.left=x+'px';tip.style.top=y+'px';
-        }
-        function hideTip(){document.getElementById('tooltip').style.display='none';}
-
-        const strip=document.getElementById('monthStrip');
-        MONTHS.forEach((m,i)=>{
-        const c=document.createElement('div');
-        c.className='month-chip'+(i===curMonth?' active':'');
-        c.textContent=m;
-        c.onclick=()=>{curMonth=i;render();};
-        strip.appendChild(c);
-        });
-
-        render();
-
-    </script>
-</body>
+        </script>
+    </body>
 </html>
