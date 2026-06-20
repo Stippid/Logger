@@ -365,7 +365,7 @@
     <!-- Main App Screen -->
     <div id="appScreen" class="container">
         <header>
-            <h2>Drop</h2>
+            <h2><img src="logoV3.png" alt="drop" style="width: 3%;"> Drop</h2>
             <div class="profile-section">
                 <button class="profile-btn" onclick="toggleDropdown()" id="profileName">Profile</button>
                 <div class="dropdown" id="profileDropdown">
@@ -741,6 +741,14 @@
                 restoreTabOrder();
                 initTabDrag();
                 restoreLastTab();
+                requestNotifyPermission();
+            }
+
+            function requestNotifyPermission() {
+                if (!('Notification' in window)) return;
+                if (Notification.permission === 'default') {
+                    Notification.requestPermission();
+                }
             }
 
             // --- UI & Settings ---
@@ -1024,12 +1032,20 @@
                     if (msg.conversation_id === activeConversationId) {
                         appendMessageToUI(msg);
                         scrollToBottom();
-                        // Mark as read immediately since we are looking at it
                         fetch(`/api/conversations/${activeConversationId}/read`, { method: 'POST', headers: getHeaders() });
+                    }
+                    
+                    if (msg.sender_id !== currentUser.id) {
+                        showDesktopNotification(msg);
                     }
                 });
 
-                socket.on('new_message_notification', () => loadConversations());
+                socket.on('new_message_notification', (msg) => {
+                    loadConversations();
+                    if (msg.sender_id !== currentUser.id) {
+                        showDesktopNotification(msg);
+                    }
+                });
 
                 socket.on('chat_deleted_notification', (convId) => {
                     if (activeConversationId === convId) {
@@ -1038,6 +1054,30 @@
                     }
                     loadConversations();
                 });
+            }
+
+            function showDesktopNotification(msg) {
+                if (!('Notification' in window) || Notification.permission !== 'granted') return;
+
+                // Don't notify if the page is focused AND we're already looking at that exact chat
+                if (document.hasFocus() && msg.conversation_id === activeConversationId) return;
+
+                const body = msg.text 
+                    ? msg.text.slice(0, 120) 
+                    : (msg.file_name ? `📎 ${msg.file_name}` : 'New message');
+
+                const notif = new Notification(`${msg.username} — Drop`, {
+                    body: body,
+                    icon: 'logoV3.png',
+                    tag: `conv-${msg.conversation_id}`, // groups notifications per-conversation, avoids spam
+                });
+
+                notif.onclick = () => {
+                    window.focus();
+                    switchTab('chat');
+                    // optionally jump straight to that conversation if you want — needs the conv list loaded
+                    notif.close();
+                };
             }
 
             async function loadConversations() {

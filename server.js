@@ -3,16 +3,20 @@ const sqlite3 = require('sqlite3').verbose();
 const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
-const http = require('http');
+const https = require('https');
 const { Server } = require('socket.io');
 const multer = require('multer');
 
 const app = express();
-const server = http.createServer(app);
-const io = new Server(server, { cors: { origin: '*' } });
+const sslOptions = {
+    key: fs.readFileSync('./certs/key.pem'),
+    cert: fs.readFileSync('./certs/cert.pem')
+};
 
-// Remove timeouts for massive file transfers (GBs)
-server.timeout = 0; 
+const httpsServer = https.createServer(sslOptions, app);
+const io = new Server(httpsServer, { cors: { origin: '*' } }); // ← move io here instead of the http server
+
+httpsServer.timeout = 0;
 
 app.use(express.json());
 app.use(cors());
@@ -351,6 +355,6 @@ app.delete('/api/fv/files', (req, res) => {
 });
 
 const PORT = 3000;
-server.listen(PORT, '0.0.0.0', () => {
-    console.log(`Server running at http://localhost:${PORT}`);
+httpsServer.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server running at https://localhost:${PORT}`);
 });
